@@ -23,6 +23,8 @@ class AddressMultiaddrs extends DynamicModelTransformSupport
 
     private $mtime;
 
+    private $txid;
+
     private $blocktime;
 
     private $amount;
@@ -36,6 +38,46 @@ class AddressMultiaddrs extends DynamicModelTransformSupport
     private $isload;
 
     private $isexist;
+
+    private $info;
+
+    /**
+     *
+     * @return $info
+     */
+    public function getInfo()
+    {
+        return $this->info;
+    }
+
+    /**
+     *
+     * @param
+     *            !CodeTemplates.settercomment.paramtagcontent!
+     */
+    public function setInfo($info)
+    {
+        $this->info = $info;
+    }
+
+    /**
+     *
+     * @return $txid
+     */
+    public function getTxid()
+    {
+        return $this->txid;
+    }
+
+    /**
+     *
+     * @param
+     *            !CodeTemplates.settercomment.paramtagcontent!
+     */
+    public function setTxid($txid)
+    {
+        $this->txid = $txid;
+    }
 
     /**
      *

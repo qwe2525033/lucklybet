@@ -45,6 +45,19 @@ class BtcTools
             return "";
         }
     }
+
+    function getTxinfo($txid)
+    {
+        $url = $this->api_urls . "/Api.aspx?action=api_gettransaction&account=" . $this->api_account . "&accountpass=" . $this->api_password;
+        echo $url;
+        $result = file_get_contents($url);
+        $address = json_decode($result);
+        if ($address && $address->code == 0) {
+            return $address->result;
+        } else {
+            return "";
+        }
+    }
 }
 
 ?>
