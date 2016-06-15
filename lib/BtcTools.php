@@ -22,7 +22,21 @@ class BtcTools
 
     function getNewAddressOne($uid)
     {
-        $url = $this->api_urls . "/Api?action=api_getnewaddr&uid=" . $uid . "&rid=108&account=" . $this->api_account . "&accountpass=" . $this->api_password;
+        $url = $this->api_urls . "/Api.aspx?action=api_getnewaddr&uid=" . $uid . "&rid=108&account=" . $this->api_account . "&accountpass=" . $this->api_password;
+        echo $url;
+        $result = file_get_contents($url);
+        $address = json_decode($result);
+        if ($address && $address->code == 0) {
+            return $address->result;
+        } else {
+            return "";
+        }
+    }
+
+    function getTransactions($count, $from)
+    {
+        $url = $this->api_urls . "/Api.aspx?action=api_listtransactions&count=" . $count . "&from=" . $from . "&account=" . $this->api_account . "&accountpass=" . $this->api_password;
+        echo $url;
         $result = file_get_contents($url);
         $address = json_decode($result);
         if ($address && $address->code == 0) {

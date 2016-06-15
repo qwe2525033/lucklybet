@@ -44,7 +44,8 @@ return array(
             'lastLoginTime' => 'last_login_time',
             'configs' => 'configs',
             'registerTime' => 'register_time',
-            'friend' => 'friend'
+            'friend' => 'friend',
+            'btcAddress' => 'btc_address'
         )
     ),
     'rule' => array()
