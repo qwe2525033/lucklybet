@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<playway xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="../../site.xsd">
+	<name>自定义玩法</name>
+	<class>YesOrNo</class>
+	<status>0</status>
+	<summary>自定义玩法,适用于自定义</summary>
+	<parameter name="vd" label="YesOrNo"></parameter>
+</playway>
