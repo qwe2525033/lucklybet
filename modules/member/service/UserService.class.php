@@ -292,15 +292,16 @@ class UserService extends TransationSupport implements IUserService
         $user->setAllowLogin(1);
         $user->setAvailableBtc(0.0);
         $user->setRegisterTime(time());
+        $user->setbtcAddress("Address-tmp" . time());
         $userId = $this->dao->add($user);
         if (! $userId)
             return false;
         $user->setId($userId);
         include_once (EXT_LIB_ROOT . 'BtcTools.php');
         $btctool = new BtcTools();
-        var_dump($btctool);
+        // var_dump($btctool);
         $user->setbtcAddress($btctool->getNewAddressOne($userId));
-        echo $user->getbtcAddress();
+        // echo $user->getbtcAddress();
         $success = $this->dao->update($user, $userId);
         // 发送注册通知
         $registerIntegral = intval(R::getConfig()->getConfig('integral_register'));

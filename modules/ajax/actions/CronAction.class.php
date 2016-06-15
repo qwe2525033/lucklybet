@@ -109,7 +109,7 @@ class CronAction extends CommonAction
 
     private function getAddressMultiaddrsForIsExist2()
     {
-        return $this->addressMultiaddrs->gets(" 1 and isexist = false and isload = true");
+        return $this->addressMultiaddrs->gets(" 1 and is_exist = false and is_load = true");
     }
 
     private function getUserDepositForTxAndAddress($txid, $address)
@@ -119,7 +119,7 @@ class CronAction extends CommonAction
 
     private function getUserDepositForIsConf6()
     {
-        return $this->userDeposit->getOne(" 1 and confirmations < 6");
+        return $this->userDeposit->gets(" 1 and confirmations < 6");
     }
     
     // ==========================================================
@@ -158,14 +158,14 @@ class CronAction extends CommonAction
                     // 获取一条交易信息
                     $txinfo = $this->btctool->getTxinfo($deposit['txid']);
                     
-                    if ($txinfo != null && $txinfo != null && count($txinfo['details']) > 0 && $txinfo['confirmations'] > $deposit['confirmations']) {
-                        $deposit['confirmations'] = $txinfo['confirmations'];
+                    if ($txinfo != null && count($txinfo->details) > 0 && $txinfo->confirmations > $deposit['confirmations']) {
+                        $deposit['confirmations'] = $txinfo->confirmations;
                         $this->UpdateUserDeposit($deposit);
                         
                         $ms = $this->getAddressMultiaddr($deposit['txid'], $deposit['wallet_address']);
                         
                         if ($ms != null) {
-                            $ms['confirmations'] = $txinfo['confirmations'];
+                            $ms['confirmations'] = $txinfo->confirmations;
                             $this->updateAddressMultiaddrs(ms);
                         }
                     }
@@ -179,17 +179,17 @@ class CronAction extends CommonAction
         $list = $this->getAddressMultiaddrsForIsExist2();
         foreach ($list as $value) {
             try {
-                if ($value['isload']) {
+                if ($value['is_load']) {
                     if ($value['category'] != "receive") {
                         $value['info'] = "数据有异常";
                         $this->update($value);
                     } else {
                         $txinfo = $this->btctool->getTxinfo($value['txid']);
-                        if ($txinfo != null && $txinfo != null && count($txinfo['details']) > 0 && $txinfo['confirmations'] >= 1) {
-                            if (count($txinfo['details']) > 1) {
+                        if ($txinfo != null && $txinfo != null && count($txinfo->details) > 0 && $txinfo->confirmations >= 1) {
+                            if (count($txinfo->details) > 1) {
                                 $is_receive = true;
-                                foreach ($txinfo['details'] as $details) {
-                                    if ($details['category'] != "receive" || $details['amount'] < 0) {
+                                foreach ($txinfo->details as $details) {
+                                    if ($details->category != "receive" || $details->amount < 0) {
                                         $is_receive = false;
                                         continue; // 不让充值 （测试一下）
                                     }
@@ -198,35 +198,33 @@ class CronAction extends CommonAction
                                     continue;
                                 } // 不让充值 （测试一下）
                             }
-                            foreach ($txinfo['details'] as $details) {
-                                if ($details['category'] != "receive") 
-                                // 如果不是充值操作，则返回
-                                {
-                                    $value['info'] = "站内转站内 - " + $details['category']; // 自己发送给自己，会存在这现象，但不影响充值。
+                            foreach ($txinfo->details as $details) {
+                                if ($details->category != "receive") {
+                                    $value['info'] = "站内转站内 - " + $details->category; // 自己发送给自己，会存在这现象，但不影响充值。
                                     $this->update($value);
                                 } else 
-                                    if ($this->getUserDepositForTxAndAddress($value['txid'], $value['address'])) {
+                                    if ($this->getUserDepositForTxAndAddress($value['txid'], $value['address']) == null) {
+                                        $this->beginTransation();
                                         $userForAddr = $this->getUserForAddr($value['address']);
                                         if (userForAddr != null) {
-                                            $this->beginTransation();
                                             $deposit = new UserDeposit();
                                             $deposit->setUserid($userForAddr['id']);
-                                            $deposit->setWalletaddress($details['address']);
-                                            $deposit->setConfirmations($txinfo['confirmations']);
-                                            $deposit->setAmount($details['amount']);
-                                            $deposit->setTxid($txinfo['txid']);
+                                            $deposit->setWalletaddress($details->address);
+                                            $deposit->setConfirmations($txinfo->confirmations);
+                                            $deposit->setAmount($details->amount);
+                                            $deposit->setTxid($txinfo->txid);
                                             $deposit->setTxisok(true);
-                                            $deposit->setAddtime(new date());
+                                            $deposit->setAddtime(date("Y-m-d H:i:s", time()));
                                             $depositId = $this->addUserDeposit($deposit);
                                             
                                             if ($depositId > 0) {
-                                                $addressMultiaddr = $this->getAddressMultiaddr($value['txid'], $details['address']);
+                                                $addressMultiaddr = $this->getAddressMultiaddr($value['txid'], $details->address);
                                                 if ($addressMultiaddr != null && $addressMultiaddr['txid'] == $value['txid']) {
-                                                    $addressMultiaddr['confirmations'] = $txinfo['confirmations'];
-                                                    $addressMultiaddr['isexist'] = true;
+                                                    $addressMultiaddr['confirmations'] = $txinfo->confirmations;
+                                                    $addressMultiaddr['is_exist'] = true;
                                                     $this->updateaddressMultiaddrs($addressMultiaddr);
                                                     
-                                                    $userForAddr['availableBtc'] = $userForAddr['availableBtc'] + $details['amount'];
+                                                    $userForAddr['available_btc'] = $userForAddr['available_btc'] + $details->amount;
                                                     $this->updateUser($userForAddr);
                                                 }
                                             }

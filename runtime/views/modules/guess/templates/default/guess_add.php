@@ -1,9 +1,9 @@
-{gtpl header}
-{res:js guess.js}
-{res:js json2.js}
+<?php include_once('E:\phpWork\lucklybet\runtime/views\./templates/default\header.php');?>
+<script type="text/javascript" src="http://localhost/res/js/guess.js"></script>
+<script type="text/javascript" src="http://localhost/res/js/json2.js"></script>
 <style>
 <!--
-	select{margin-bottom: 0px;}
+	select{margin-bottom: 0px; }
 -->
 </style>
 	<div class="post_body">
@@ -23,15 +23,15 @@
 					<dd class="c9" id="selects">
 						<select class="span2" id="cateid" name="cateid" onchange="subCategorySelect(this.value, 'sub_cateid', '请选择小分类')">
 							<option value="">请选择大分类</option>
-							{loop $rootCategorys $category}
-                            <option value="{$category['id']}" {if $cateid == $category['id']}selected{/if}>{$category['name']}</option>
-                            {/loop}
+							<?php foreach($rootCategorys as $category){ ?>
+                            <option value="<?php echo $category['id']; ?>" <?php if($cateid == $category['id']){ ?>selected<?php } ?>><?php echo $category['name']; ?></option>
+                            <?php } ?>
 						</select>
 						<select style="display:none;" class="span2" name="sub_cateid" id="sub_cateid" onchange="guessPointSelect(this.value, 'guess_point_id')">
 							<option value="">请选择小分类</option>
-                            {loop $subCategorys $category}
-                            <option value="{$category['id']}" {if $sub_cateid == $category['id']}selected{/if}>{$category['name']}</option>
-                            {/loop}
+                            <?php foreach($subCategorys as $category){ ?>
+                            <option value="<?php echo $category['id']; ?>" <?php if($sub_cateid == $category['id']){ ?>selected<?php } ?>><?php echo $category['name']; ?></option>
+                            <?php } ?>
 						</select>
 						<select  style="display:none;" class="span4" name="guess_point_id" id="guess_point_id" onchange="guessPointSelected(this.value)">
 							<option value="">请选择竞猜点</option>
@@ -50,4 +50,4 @@
 	</div>
 	
 	<!-- 添加玩法 -->
-{gtpl footer}
+<?php include_once('E:\phpWork\lucklybet\runtime/views\./templates/default\footer.php');?>

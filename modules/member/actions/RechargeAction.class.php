@@ -80,6 +80,7 @@ class RechargeAction extends UserCenterAction
             }
             die();
         } else {
+            $request->assign('address', $this->user->getbtcAddress());
             $this->setView('recharge_index');
         }
     }

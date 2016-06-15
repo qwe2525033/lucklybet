@@ -203,7 +203,7 @@ class ModelDao
     {
         $model = $this->makeSureModelData($model);
         $sql = SQL::createUpdate($this->table, $model, $conditions, $mathMode);
-        echo $sql;
+        // echo $sql;
         return $this->query($sql);
     }
 

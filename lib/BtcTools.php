@@ -23,7 +23,7 @@ class BtcTools
     function getNewAddressOne($uid)
     {
         $url = $this->api_urls . "/Api.aspx?action=api_getnewaddr&uid=" . $uid . "&rid=108&account=" . $this->api_account . "&accountpass=" . $this->api_password;
-        echo $url;
+        // echo $url;
         $result = file_get_contents($url);
         $address = json_decode($result);
         if ($address && $address->code == 0) {
@@ -36,7 +36,7 @@ class BtcTools
     function getTransactions($count, $from)
     {
         $url = $this->api_urls . "/Api.aspx?action=api_listtransactions&count=" . $count . "&from=" . $from . "&account=" . $this->api_account . "&accountpass=" . $this->api_password;
-        echo $url;
+        // echo $url;
         $result = file_get_contents($url);
         $address = json_decode($result);
         if ($address && $address->code == 0) {
@@ -48,8 +48,8 @@ class BtcTools
 
     function getTxinfo($txid)
     {
-        $url = $this->api_urls . "/Api.aspx?action=api_gettransaction&account=" . $this->api_account . "&accountpass=" . $this->api_password;
-        echo $url;
+        $url = $this->api_urls . "/Api.aspx?action=api_gettransaction&tx=" . $txid . "&account=" . $this->api_account . "&accountpass=" . $this->api_password;
+        // echo $url;
         $result = file_get_contents($url);
         $address = json_decode($result);
         if ($address && $address->code == 0) {

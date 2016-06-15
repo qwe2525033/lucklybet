@@ -198,6 +198,7 @@ function guessPointSelect(cateId, selectId, defaultTitle){
 		}
 		$('#'+selectId).html(html);
 		$('#'+selectId).show();
+		$('#add_guess_point_button').attr('href','/guess/guessPoint/add/?cateId='+cateId).show();
 	    }
 	}
     });
