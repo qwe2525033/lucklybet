@@ -1,186 +1,306 @@
 <?php
+
 /**
  * 管理员
  * @author blueyb.java@gmail.com
  * @since 1.0 2012-12-16
  * 
  */
-class Manager extends DynamicModelTransformSupport{
+class AddressMultiaddrs extends DynamicModelTransformSupport
+{
 
-	/**
-	 * 名称 
-	 * @var int 
-	 */
-	private $id;
+    private $id;
 
-	/**
-	 * 名称 
-	 * @var string 
-	 */
-	private $name;
+    private $category;
 
-	/**
-	 * 密码 
-	 * @var string 
-	 */
-	private $password;
+    private $account;
 
-	/**
-	 * 手机 
-	 * @var string 
-	 */
-	private $mobile;
+    private $fee;
 
-	/**
-	 * 管理组ID 
-	 * @var int 
-	 */
-	private $groupId;
+    private $blockhash;
 
-	/**
-	 * 是否允许登陆 
-	 * @var int 
-	 */
-	private $allowLogin;
+    private $blockindex;
 
-	/**
-	 * 上次登陆时间 
-	 * @var int 
-	 */
-	private $lastLoginTime;
+    private $mtime;
 
-	/**
-	 * 创建时间 
-	 * @var int 
-	 */
-	private $createTime;
+    private $blocktime;
 
-	/**
-	 * 
-	 * @return int 
-	 */
-	public function getId(){ 
-		return $this->id;
-	}
+    private $amount;
 
-	/**
-	 * 
-	 * @param int  
-	 */
-	public function setId($id){ 
-		$this->id = $id; 
-	}
+    private $confirmations;
 
-	/**
-	 * 
-	 * @return string 
-	 */
-	public function getName(){ 
-		return $this->name;
-	}
+    private $timereceived;
 
-	/**
-	 * 
-	 * @param string  
-	 */
-	public function setName($name){ 
-		$this->name = $name; 
-	}
+    private $address;
 
-	/**
-	 * 
-	 * @return string 
-	 */
-	public function getPassword(){ 
-		return $this->password;
-	}
+    private $isload;
 
-	/**
-	 * 
-	 * @param string  
-	 */
-	public function setPassword($password){ 
-		$this->password = $password; 
-	}
+    private $isexist;
 
-	/**
-	 * 
-	 * @return string 
-	 */
-	public function getMobile(){ 
-		return $this->mobile;
-	}
+    /**
+     *
+     * @return $id
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
-	/**
-	 * 
-	 * @param string  
-	 */
-	public function setMobile($mobile){ 
-		$this->mobile = $mobile; 
-	}
+    /**
+     *
+     * @return $category
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
 
-	/**
-	 * 
-	 * @return int 
-	 */
-	public function getGroupId(){ 
-		return $this->groupId;
-	}
+    /**
+     *
+     * @return $account
+     */
+    public function getAccount()
+    {
+        return $this->account;
+    }
 
-	/**
-	 * 
-	 * @param int  
-	 */
-	public function setGroupId($groupId){ 
-		$this->groupId = $groupId; 
-	}
+    /**
+     *
+     * @return $fee
+     */
+    public function getFee()
+    {
+        return $this->fee;
+    }
 
-	/**
-	 * 
-	 * @return int 
-	 */
-	public function getAllowLogin(){ 
-		return $this->allowLogin;
-	}
+    /**
+     *
+     * @return $blockhash
+     */
+    public function getBlockhash()
+    {
+        return $this->blockhash;
+    }
 
-	/**
-	 * 
-	 * @param int  
-	 */
-	public function setAllowLogin($allowLogin){ 
-		$this->allowLogin = $allowLogin; 
-	}
+    /**
+     *
+     * @return $blockindex
+     */
+    public function getBlockindex()
+    {
+        return $this->blockindex;
+    }
 
-	/**
-	 * 
-	 * @return int 
-	 */
-	public function getLastLoginTime(){ 
-		return $this->lastLoginTime;
-	}
+    /**
+     *
+     * @return $mtime
+     */
+    public function getMtime()
+    {
+        return $this->mtime;
+    }
 
-	/**
-	 * 
-	 * @param int  
-	 */
-	public function setLastLoginTime($lastLoginTime){ 
-		$this->lastLoginTime = $lastLoginTime; 
-	}
+    /**
+     *
+     * @return $blocktime
+     */
+    public function getBlocktime()
+    {
+        return $this->blocktime;
+    }
 
-	/**
-	 * 
-	 * @return int 
-	 */
-	public function getCreateTime(){ 
-		return $this->createTime;
-	}
+    /**
+     *
+     * @return $amount
+     */
+    public function getAmount()
+    {
+        return $this->amount;
+    }
 
-	/**
-	 * 
-	 * @param int  
-	 */
-	public function setCreateTime($createTime){ 
-		$this->createTime = $createTime; 
-	}
-	
-}?>
+    /**
+     *
+     * @return $confirmations
+     */
+    public function getConfirmations()
+    {
+        return $this->confirmations;
+    }
+
+    /**
+     *
+     * @return $timereceived
+     */
+    public function getTimereceived()
+    {
+        return $this->timereceived;
+    }
+
+    /**
+     *
+     * @return $address
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
+
+    /**
+     *
+     * @return $isload
+     */
+    public function getIsload()
+    {
+        return $this->isload;
+    }
+
+    /**
+     *
+     * @return $isexist
+     */
+    public function getIsexist()
+    {
+        return $this->isexist;
+    }
+
+    /**
+     *
+     * @param
+     *            !CodeTemplates.settercomment.paramtagcontent!
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     *
+     * @param
+     *            !CodeTemplates.settercomment.paramtagcontent!
+     */
+    public function setCategory($category)
+    {
+        $this->category = $category;
+    }
+
+    /**
+     *
+     * @param
+     *            !CodeTemplates.settercomment.paramtagcontent!
+     */
+    public function setAccount($account)
+    {
+        $this->account = $account;
+    }
+
+    /**
+     *
+     * @param
+     *            !CodeTemplates.settercomment.paramtagcontent!
+     */
+    public function setFee($fee)
+    {
+        $this->fee = $fee;
+    }
+
+    /**
+     *
+     * @param
+     *            !CodeTemplates.settercomment.paramtagcontent!
+     */
+    public function setBlockhash($blockhash)
+    {
+        $this->blockhash = $blockhash;
+    }
+
+    /**
+     *
+     * @param
+     *            !CodeTemplates.settercomment.paramtagcontent!
+     */
+    public function setBlockindex($blockindex)
+    {
+        $this->blockindex = $blockindex;
+    }
+
+    /**
+     *
+     * @param
+     *            !CodeTemplates.settercomment.paramtagcontent!
+     */
+    public function setMtime($mtime)
+    {
+        $this->mtime = $mtime;
+    }
+
+    /**
+     *
+     * @param
+     *            !CodeTemplates.settercomment.paramtagcontent!
+     */
+    public function setBlocktime($blocktime)
+    {
+        $this->blocktime = $blocktime;
+    }
+
+    /**
+     *
+     * @param
+     *            !CodeTemplates.settercomment.paramtagcontent!
+     */
+    public function setAmount($amount)
+    {
+        $this->amount = $amount;
+    }
+
+    /**
+     *
+     * @param
+     *            !CodeTemplates.settercomment.paramtagcontent!
+     */
+    public function setConfirmations($confirmations)
+    {
+        $this->confirmations = $confirmations;
+    }
+
+    /**
+     *
+     * @param
+     *            !CodeTemplates.settercomment.paramtagcontent!
+     */
+    public function setTimereceived($timereceived)
+    {
+        $this->timereceived = $timereceived;
+    }
+
+    /**
+     *
+     * @param
+     *            !CodeTemplates.settercomment.paramtagcontent!
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+    }
+
+    /**
+     *
+     * @param
+     *            !CodeTemplates.settercomment.paramtagcontent!
+     */
+    public function setIsload($isload)
+    {
+        $this->isload = $isload;
+    }
+
+    /**
+     *
+     * @param
+     *            !CodeTemplates.settercomment.paramtagcontent!
+     */
+    public function setIsexist($isexist)
+    {
+        $this->isexist = $isexist;
+    }
+}
+?>
