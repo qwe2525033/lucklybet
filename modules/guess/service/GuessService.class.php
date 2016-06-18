@@ -457,9 +457,11 @@ class GuessService extends TransationSupport implements IGuessService
      */
     public function guessPointRudge(GuessPoint $guessPoint)
     {
-        if ($guessPoint->getStatus() != GuessPoint::STATUS_NORMAL || $guessPoint->getPlayDeadline() > time())
+        // if ($guessPoint->getStatus() != GuessPoint::STATUS_NORMAL || $guessPoint->getPlayDeadline() > time())
+        if ( $guessPoint->getStatus() != GuessPoint::STATUS_NORMAL )
             return false;
-            // 获取这个竞猜点的所有竞猜
+
+        // 获取这个竞猜点的所有竞猜
         $guesses = $this->getGuessPointGuesses($guessPoint);
         try {
             $this->beginTransation();

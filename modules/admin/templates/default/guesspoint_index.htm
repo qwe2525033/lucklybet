@@ -73,18 +73,17 @@
 									{if $item['status'] == GuessPoint::STATUS_RUDGED}
 									已判定，无操作
 									{elseif $item['status'] == GuessPoint::STATUS_NORMAL}
-										{if time() > $item['play_deadline']}
-											<a href="{url /$currentModule/$currentAction/result/?id=$item[id]}">结果判定</a>&nbsp;
-										{/if}
+										<a href="{url /$currentModule/$currentAction/result/?id=$item[id]}">结果判定</a>&nbsp;
+										<a href="{url /$currentModule/$currentAction/back/?id=$item[id]}">退回</a>&nbsp;
 										{if !$item['guess_count']}
 											<a href="{url /$currentModule/$currentAction/edit/?id=$item[id]}">编辑</a>&nbsp;
-											<a href="{url /$currentModule/$currentAction/del/?id=$item[id]}">删除</a>&nbsp;
+											<a onclick="if ( confirm('是否删除') ) window.location.href='{url /$currentModule/$currentAction/del/?id=$item[id]}' ;">删除</a>&nbsp;
 										{/if}
 									{else}
 										<a href="{url /$currentModule/$currentAction/enable/?id=$item[id]}">启用</a>&nbsp;
 										{if !$item['guess_count']}
 											<a href="{url /$currentModule/$currentAction/edit/?id=$item[id]}">编辑</a>&nbsp;
-											<a href="{url /$currentModule/$currentAction/del/?id=$item[id]}">删除</a>&nbsp;
+											<a onclick="if ( confirm('是否删除') ) window.location.href='{url /$currentModule/$currentAction/del/?id=$item[id]}' ;">删除</a>&nbsp;
 											<a href="{url /$currentModule/$currentAction/param/?id=$item[id]}">编辑参数</a>&nbsp;
 										{/if}
 									{/if}
