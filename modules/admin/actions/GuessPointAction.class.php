@@ -261,7 +261,6 @@ class GuessPointAction extends AbstractAdminAction{
 			}
 		}
 	}
-	
 
 	public function result(HttpRequest $request){
 		$id = $request->getParameter('id');

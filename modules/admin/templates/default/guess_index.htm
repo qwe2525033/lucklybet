@@ -98,6 +98,7 @@
 								<td align="left">
 									{if $item['play_deadline'] > $time && ($item['status'] == 1 || $item['status'] == 2 )}
 										<a href="{url /$currentModule/$currentAction/end/?id=$item[id]}">提前结束</a>&nbsp;
+										<a href="{url /$currentModule/$currentAction/back/?id=$item[id]}">退回</a>&nbsp;
 									{/if}
 									{if $item['status'] == 0}
 									<a href="{url /$currentModule/$currentAction/check/?id=$item[id]}">审核通过</a>&nbsp;

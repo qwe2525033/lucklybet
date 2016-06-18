@@ -206,6 +206,22 @@ class GuessAction extends AbstractAdminAction{
 			show_message(get_lang('operation_failed_common'));
 		}
 	}
+
+
+	public function back(HttpRequest $request){
+		$id = $request->getParameter('id');
+		if(empty($id)){
+			show_message(get_lang('no_record_common'));
+		}
+
+		$guessService = GuessServiceFactory::getGuessService();
+		$guess = $guessService->get($id, true);
+		$success = $guessService->back($guess);
+	
+		var_dump($success);exit;
+        
+		// echo $id;exit;
+	}
 	
 	public function rudge(HttpRequest $request){
 		$id = $request->getParameter('id');
