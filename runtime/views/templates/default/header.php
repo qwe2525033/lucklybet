@@ -7,21 +7,21 @@
 <title><?php echo $seo['title']; ?></title>
 <meta name="description" content="<?php echo $seo['description']; ?>" />
 <meta name="keywords" content="<?php echo $seo['keywords']; ?>" />
-<link rel="stylesheet" href="http://localhost/res/css/bootstrap.min.css" />
-<!--<script type="text/javascript" src="http://localhost/res/js/bootstrap.min.js"></script>-->
-<script type="text/javascript" src="http://localhost/res/js/jquery/jquery-1.9.0.min.js"></script>
-<script type="text/javascript" src="http://localhost/res/js/bootstrap-modal.js"></script>
-<script type="text/javascript" src="http://localhost/res/js/bootstrap-tab.js"></script>
-<script type="text/javascript" src="http://localhost/res/js/bootstrap-dropdown.js"></script>
+<link rel="stylesheet" href="/res/css/bootstrap.min.css" />
+<!--<script type="text/javascript" src="/res/js/bootstrap.min.js"></script>-->
+<script type="text/javascript" src="/res/js/jquery/jquery-1.9.0.min.js"></script>
+<script type="text/javascript" src="/res/js/bootstrap-modal.js"></script>
+<script type="text/javascript" src="/res/js/bootstrap-tab.js"></script>
+<script type="text/javascript" src="/res/js/bootstrap-dropdown.js"></script>
 
-<script type="text/javascript" src="http://localhost/res/js/global.js"></script>
-<script type="text/javascript" src="http://localhost/res/js/string.extends.js"></script>
-<script type="text/javascript" src="http://localhost/res/js/functions.js"></script>
-<script type="text/javascript" src="http://localhost/res/js/uc_common.js"></script>
-<script type="text/javascript" src="http://localhost/res/js/uc_menu.js"></script>
-<script type="text/javascript" src="http://localhost/res/js/uc_ajax.js"></script>
-<link rel="stylesheet" href="http://localhost/res/css/style.css" />
-<link rel="stylesheet" href="http://localhost/res/css/dialog.css" />
+<script type="text/javascript" src="/res/js/global.js"></script>
+<script type="text/javascript" src="/res/js/string.extends.js"></script>
+<script type="text/javascript" src="/res/js/functions.js"></script>
+<script type="text/javascript" src="/res/js/uc_common.js"></script>
+<script type="text/javascript" src="/res/js/uc_menu.js"></script>
+<script type="text/javascript" src="/res/js/uc_ajax.js"></script>
+<link rel="stylesheet" href="/res/css/style.css" />
+<link rel="stylesheet" href="/res/css/dialog.css" />
 
 
 </head>
@@ -32,7 +32,7 @@
 		<div class="topnav">
 			<div class="navbody">
 				<div class="leftcontent">
-					<a href="/guess/add/" class="postzz">我要坐庄</a>
+					<a href="/guess/add/" class="postzz">发起竞猜</a>
 				</div>
 				
 				<div class="rightcontent">
@@ -45,7 +45,7 @@
 							<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
 					        	<li><a href="/member/setting/">用户设置</a></li>
 								<li><a href="<?php echo url("/member/space/?uid={$user->getId()}") ?>">个人主页</a></li>
-								<li><a href="/member/btc/">我的比特币</a></li>
+								<li><a href="/member/btc/">我的莱特币</a></li>
 								<li><a href="/member/integral/">我的积分</a></li>
 								<?php if(!$user->getMakersLevel()){ ?>
 								<li><a href="/member/auth/">庄家认证</a></li>
@@ -66,7 +66,7 @@
 		<div class="userinfo">
 			<div class="l1">您好，<?php echo $user->getName(); ?></div>
 			<div class="l2">
-				<span class="cap1">比特币</span>
+				<span class="cap1">莱特币</span>
 				<span class="num"><?php echo $user->getAvailableBtc(); ?></span>
 			</div>
 			<!-- div class="l2">
@@ -82,8 +82,7 @@
 			<li><a href="/" <?php if($currentModule=='common'){ ?>class="sel"<?php } ?>>首 页</a></li>
 			<li><a href="/guess/list/" <?php if($currentModule=='guess'){ ?>class="sel"<?php } ?>>竞 猜</a></li>
 			<li><a href="/member/list/"<?php if($currentModule=='member'){ ?>class="sel"<?php } ?>>用 户</a></li>
-			<li><a href="/goods/list/" <?php if($currentModule=='goods'){ ?>class="sel"<?php } ?>>兑 换</a></li>
-			<li><a href="/news/list/" <?php if($currentModule=='news'){ ?>class="sel"<?php } ?>>说 明</a></li>
+			<li><a href="/news/list/" <?php if($currentModule=='news'){ ?>class="sel"<?php } ?>>帮 助</a></li>
 		</ul>
 	
 	    <div class="search">

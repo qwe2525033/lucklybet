@@ -106,6 +106,9 @@ return array(
     'chongzhi_url_config' => '接口地址',
     'chongzhi_account_config' => '标签账号',
     'chongzhi_password_config' => '标签密码',
+    'chongzhi_querenshu_config' => '充值确认数',
+    'chongzhi_shoudizhi_config' => '钱包首地址',
+    'chongzhi_name_config' => '币名',
     
     'email_service_type_config' => '邮件服务',
     'email_smtp_config' => 'SMTP',
@@ -125,7 +128,7 @@ return array(
     'btc_tab_config' => '竞猜规则',
     'integral_invite_config' => '邀请用户注册赠送积分',
     'integral_share_config' => '竞猜分享积分奖励',
-    'recharge_inviter_reward_config' => '用户充值奖励比特币比例(如0.1)',
+    'recharge_inviter_reward_config' => '用户充值奖励莱特币比例(如0.1)',
     'pay_tab_config' => '支付设置',
     'alipay_parter_id_config' => '支付宝合作商ID',
     'alipay_parter_key_config' => '支付宝合作商密钥',

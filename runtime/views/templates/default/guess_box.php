@@ -31,16 +31,16 @@
 <p class="r">
 	<?php if($item['odds_type'] == 3){ ?>
 	<!--
-	<img src="http://localhost/res/images/f1.gif" /> &nbsp;&nbsp;
-	<img src="http://localhost/res/images/f2.gif" />
+	<img src="/res/images/f1.gif" /> &nbsp;&nbsp;
+	<img src="/res/images/f2.gif" />
 	-->
 	<span class="label label-success">浮动赔率</span>
 	<span class="label label-important">固定赔率</span>
 	<?php }elseif($item['odds_type'] == 2){ ?>
 	<span class="label label-success">浮动赔率</span>
-	<!-- <img src="http://localhost/res/images/f1.gif" /> -->
+	<!-- <img src="/res/images/f1.gif" /> -->
 	<?php }elseif($item['odds_type'] == 1){ ?>
-	<!-- <img src="http://localhost/res/images/f2.gif" /> -->
+	<!-- <img src="/res/images/f2.gif" /> -->
 	<span class="label label-important">固定赔率</span>
 	<?php } ?>
 </p>
@@ -50,7 +50,7 @@
 	<?php if($item['custom']){ ?>
 	<p class="tab">自定义</p>
 	<?php }else{ ?>
-	<p class="tab">投注<?php if($item['wealth_type'] == Guess::WEALTH_TYPE_MONEY){ ?>比特币<?php }else{ ?>积分<?php } ?></p>
+	<p class="tab">投注<?php if($item['wealth_type'] == Guess::WEALTH_TYPE_MONEY){ ?>莱特币<?php }else{ ?>积分<?php } ?></p>
 	<p class="val"><?php echo $item['play_wealth']; ?></p>
 	<?php } ?>
 	

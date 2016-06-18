@@ -56,7 +56,7 @@
 				<li><a href="/guess/my/friend/">我好友的竞猜</a><span><?php echo $friendGuessCount; ?></span></li>
 				<li><a href="/guess/my/invite/">邀请我参与的竞猜</a><span><?php echo $inviteGuessCount; ?></span></li>
 			</ul>
-			<?php include_once('E:\phpWork\lucklybet\runtime/views\./templates/default\invite_box.php');?>
+			
 			
 			<!--
 			<div class="ulist">
@@ -65,8 +65,9 @@
 			</div>
 			-->
 			
-			<div class="ad">
-				<?php include_once('E:\phpWork\lucklybet\runtime/views\./templates/default\ad_box.php');?>				
+			<div class="ad" style="margin-left:50px;">
+				<?php include_once('E:\phpWork\lucklybet\runtime/views\./templates/default\ad_box.php');?>	
+				<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1259577717'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s95.cnzz.com/stat.php%3Fid%3D1259577717%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
 			</div>
 					
 		</div>

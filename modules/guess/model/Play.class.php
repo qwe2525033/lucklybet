@@ -209,7 +209,7 @@ class Play extends DynamicModelTransformSupport
     }
 
     /**
-     * 是否是比特币类型财富
+     * 是否是莱特币类型财富
      * return boolean
      */
     public function wealthTypeIsBtc()

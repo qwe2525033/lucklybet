@@ -19,7 +19,7 @@
 						<div class="caption">下注类型</div>
 						<ul>
 							<li><a {if !$params['wealth']}class="sel"{/if} href="{url /guess/list/?history=$params[history]&cateid=$params[cateid]&custom=$params[custom]&wealth=0&odds=$params[odds]&time=$params[time]&keyword=$params[keyword]&range=$params[range]}">全部</a></li>
-							<li><a {if $params['wealth'] == '1'}class="sel"{/if} href="{url /guess/list/?history=$params[history]&cateid=$params[cateid]&custom=$params[custom]&wealth=1&odds=$params[odds]&time=$params[time]&keyword=$params[keyword]&range=$params[range]}">比特币</a></li>
+							<li><a {if $params['wealth'] == '1'}class="sel"{/if} href="{url /guess/list/?history=$params[history]&cateid=$params[cateid]&custom=$params[custom]&wealth=1&odds=$params[odds]&time=$params[time]&keyword=$params[keyword]&range=$params[range]}">莱特币</a></li>
 							<li><a {if $params['wealth'] == '2'}class="sel"{/if} href="{url /guess/list/?history=$params[history]&cateid=$params[cateid]&custom=$params[custom]&wealth=2&odds=$params[odds]&time=$params[time]&keyword=$params[keyword]&range=$params[range]}">积分</a></li>
 							<li><a {if $params['wealth'] == '3'}class="sel"{/if} href="{url /guess/list/?history=$params[history]&cateid=$params[cateid]&custom=$params[custom]&wealth=3&odds=$params[odds]&time=$params[time]&keyword=$params[keyword]&range=$params[range]}">吃喝玩乐</a></li>
 						</ul>
@@ -85,7 +85,6 @@
 		
 		<div class="right">
 			{gtpl notice_box}
-			{gtpl invite_box}
 			<!--
 			<div class="ulist">
 				<div class="title">您可能感兴趣的用户</div>

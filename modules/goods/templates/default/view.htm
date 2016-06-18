@@ -8,7 +8,7 @@
 				<p class="t">
 				状态：<span>{if $item['status']}上架{else}已下架{/if}</span>&nbsp;&nbsp;&nbsp;&nbsp;
 				库存：<span>{$item['count']}</span>&nbsp;&nbsp;&nbsp;&nbsp;
-				{if $item['can_exchange']}兑换比特币：<span>{$item['btc']}</span>&nbsp;&nbsp;&nbsp;&nbsp;{/if}
+				{if $item['can_exchange']}兑换莱特币：<span>{$item['btc']}</span>&nbsp;&nbsp;&nbsp;&nbsp;{/if}
 				{if $item['can_lottery']}抽奖次数：<span>{if $item['lottery_count']}{$item['lottery_count']}{else}不限{/if}</span>&nbsp;&nbsp;&nbsp;&nbsp;{/if}
 				</p>
 				{if $item['status'] && $item['count'] > 0 }

@@ -9,7 +9,7 @@ class ExchangeAction extends UserCenterAction
 
     public function index(HttpRequest $request)
     {
-        // 检查商品状态、用户比特币状态
+        // 检查商品状态、用户莱特币状态
         $goodsId = $request->getParameter('id');
         if (empty($goodsId)) {
             show_message('请选择要兑换的商品!');
@@ -23,7 +23,7 @@ class ExchangeAction extends UserCenterAction
             show_message('商品不支持兑换或库存不足');
         }
         if ($this->user->getAvailableBtc() < $goods['btc'] || $this->user->getAvailableBtc() < $goods['btc_limit']) {
-            show_message('你的比特币不足，请先充值');
+            show_message('你的莱特币不足，请先充值');
         }
         if ($request->isPost()) {
             $username = $request->getParameter('username');

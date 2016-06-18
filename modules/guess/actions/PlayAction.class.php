@@ -69,7 +69,7 @@ class PlayAction extends UserCenterAction
             $wealthType = $play->getWealthType();
             $playWealth = $play->getPlayWealth();
             if ($wealthType == 1 && $playWealth > $this->user->getAvailableBtc()) {
-                show_message('你的比特币不够，请先充值');
+                show_message('你的莱特币不够，请先充值');
             }
             
             if ($wealthType == 2 && $playWealth > $this->user->getAvailableIntegral()) {

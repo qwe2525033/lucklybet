@@ -25,7 +25,7 @@
 		                               	下注形式:
 		                               	<select name="wealth_type">
 		                               		<option value="0" {if !$wealth_type}selected{/if}>全部</option>
-		                               		<option value="1" {if $wealth_type == 1}selected{/if}>比特币</option>
+		                               		<option value="1" {if $wealth_type == 1}selected{/if}>莱特币</option>
 		                               		<option value="2" {if $wealth_type == 2}selected{/if}>积分</option>
 		                               		<option value="3" {if $wealth_type == 3}selected{/if}>自定义</option>
 		                               	</select>										
@@ -76,7 +76,7 @@
 						<tr>
 								<td align="left"><a href="/guess/adminReview/?id={$item['id']}" target="_blank">{$item['title']}</a></td>
 								<td align="left">{$users[$item[user_id]]['name']}</td>
-								<td align="left">{if $item['wealth_type'] == 1}比特币/{$item['keep_wealth']}{elseif $item['wealth_type'] == 2}积分/{$item['keep_wealth']}{else}{$item['custom_type']}{/if}</td>
+								<td align="left">{if $item['wealth_type'] == 1}莱特币/{$item['keep_wealth']}{elseif $item['wealth_type'] == 2}积分/{$item['keep_wealth']}{else}{$item['custom_type']}{/if}</td>
 								<td align="left">{$item['play_count']}/{$item['play_wealth']}</td>
 								<td align="left">
 									{if $item['status'] == 0}待审核

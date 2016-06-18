@@ -8,25 +8,25 @@ function showVerificationCode(id) {
 }
 function createMobileVerifyCode(mobile) {
     if(mobile.isEmpty()){
-	alert('请先填写手机号!');
-	return;
+		alert('请先填写手机号!');
+		return;
     }
     if(!mobile.isMobile()){
-	alert('请输入正确的手机号码');
-	return;
+		alert('请输入正确的手机号码');
+		return;
     }
     $.ajax({
-	url : '/ajax/verify/mobile/?mobile=' + mobile,
-	type : "POST",
-	dataType : "json",
-	success : function(result) {
-	    if(result.state == 0){
-		alert(result.message);
-	    }else{
-		// TODO 重新获取计时
-	    }
-	}
-    });
+		url : '/ajax/verify/mobile/?mobile=' + mobile,
+		type : "POST",
+		dataType : "json",
+		success : function(result) {
+	    	if(result.state == 0){
+				alert(result.message);
+	    	}else{
+				// TODO 重新获取计时
+	    	}
+		}
+	});
 }
 /**
  * 发送手机注册验证码
@@ -38,18 +38,44 @@ function sendRegisterVerify() {
 function postFormHandle(formid) {
     $('#__' + formid).css('color', 'red');
 }
+function exchangeFormHandle(formid){
+	var str = $('#__'+formid).text();
+	if(str == '兑换预言币成功,请等待管理员处理'){
+		//window.location.reload(true);
+		setTimeout("hideMenu()",2000);
+	}
+}
 function jumpHome(formid){
 	var str = $('#__'+formid).text();
 	if(str == '注册成功，正在跳转...')
 		window.location.href='/';
 }
-
+function addAjaxGuessPoint(formid){
+	var cateId = $('#m_cate_id').val();
+	var str = $('#__'+formid).text();
+	if(str == '竞猜点添加成功...'){
+		ajaxGuessPointSelect(cateId,'guess_point_id');
+	}
+}
+function addAjaxComplain(formid){
+	var str = $('#__'+formid).text();
+	if(str == '投诉庄家成功...'){
+		window.location.reload(true);
+		//hideMenu();
+	}
+}
+function resultAjaxGuessPoint(formid){
+	var str = $('#__'+formid).text();
+	if(str == '竞猜结果判定成功...'){
+		window.location.reload(true);		
+	}
+}
 // 保存KE的值
 function saveEditorValue(id) {
     if(KE){
-	// 如果是使用KE编辑器
-	var message = KE.util.getData(id);
-	jq('#' + id).val(message);
+		// 如果是使用KE编辑器
+		var message = KE.util.getData(id);
+		jq('#'+id).val(message);
     }
 }
 function ajaxMenuDelete(id) {
@@ -61,39 +87,39 @@ function bindAvatarUpload() {
     sessionId = sessionId[1];
     var sUserAgent = window.navigator.userAgent;
     $('#file_upload').uploadify({
-	'uploader' : '/res/js/uploadify/uploadify.swf',
-	'script' : '/member/upload/avatar/',
-	'scriptData' : {
-	    'PHPSESSID' : sessionId,
-	    'HTTP_USER_AGENT' : sUserAgent
-	},
-	'fileDataName' : 'avatar',
-	'buttonImg' : '/res/images/upload.png',
-	'cancelImg' : '/res/images/cancel.png',
-	'fileExt' : '*.jpg;*.jpeg;*.gif;*.png',
-	'sizeLimit' : 100 * 1024,
-	'fileDesc' : '只允许上传jpg,jpeg,gif;png图片',
-	'auto' : true,
-	'width' : '54',
-	'height' : '28',
-	'onOpen' : function() {
-	    $('#avatar_edit_waiting').show();
-	    $('#file_uploadQueue').hide();
-	},
-	'onComplete' : function(event, ID, fileObj, response, data) {
-	    $('#avatar_edit_waiting').hide();
-	    response = response.toJson();
-	    if(!response.state){
-		alert(response.message);
-		return;
-	    }
-	    $('#avatar').val(response.message);
-	    $('#avatar_preview').attr('src', response.message);
-	},
-	'onError' : function(event, ID, fileObj, errorObj) {
-	    $('#avatar_edit_waiting').hide();
-	    alert("网络错误或图片大小超过100K限制，上传图标失败");
-	}
+		'uploader' : '/res/js/uploadify/uploadify.swf',
+		'script' : '/member/upload/avatar/',
+		'scriptData' : {
+	    	'PHPSESSID' : sessionId,
+	    	'HTTP_USER_AGENT' : sUserAgent
+		},
+		'fileDataName' : 'avatar',
+		'buttonImg' : '/res/images/upload.png',
+		'cancelImg' : '/res/images/cancel.png',
+		'fileExt' : '*.jpg;*.jpeg;*.gif;*.png',
+		'sizeLimit' : 100 * 1024,
+		'fileDesc' : '只允许上传jpg,jpeg,gif;png图片',
+		'auto' : true,
+		'width' : '54',
+		'height' : '28',
+		'onOpen' : function() {
+	    	$('#avatar_edit_waiting').show();
+	    	$('#file_uploadQueue').hide();
+		},
+		'onComplete' : function(event, ID, fileObj, response, data) {
+	    	$('#avatar_edit_waiting').hide();
+	    	response = response.toJson();
+	    	if(!response.state){
+				alert(response.message);
+				return;
+	    	}
+	    	$('#avatar').val(response.message);
+	    	$('#avatar_preview').attr('src', response.message);
+		},
+		'onError' : function(event, ID, fileObj, errorObj) {
+	    	$('#avatar_edit_waiting').hide();
+	    	alert("网络错误或图片大小超过100K限制，上传图标失败");
+		}
     });
 }
 function openBindWindow(url) {
@@ -105,8 +131,7 @@ function openBindWindow(url) {
     var centerY = $(window).height() / 2 + $(document).scrollTop();
     var left = centerX - width / 2;
     var top = centerY - height / 2 + topOffset;
-    params += ', width=' + width + ', height=' + height + ', top=' + top
-	    + ', left=' + left;
+    params += ', width=' + width + ', height=' + height + ', top=' + top + ', left=' + left;
     window.open(url, 'bindWindow', params)
 }
 function bindSuccess(){
@@ -116,9 +141,13 @@ function bindSuccess(){
 function unBindSuccess(){
     window.location.reload();
 }
-
+function cancelSelectsMark(){
+    $('#cateid, #sub_cateid, #guess_point_id,#add_guess_point_button').attr('readonly',false);
+	$('#guess_add_template').html('');
+	$("#selects_mark").remove();
+}
 function selectsMark(){
-    $('#cateid, #sub_cateid, #guess_point_id').attr('readonly', '');
+	$('#cateid, #sub_cateid, #guess_point_id,#add_guess_point_button').attr('readonly', '');
     var selects = $('#selects');
     var selectsMark = $("<div id='selects_mark' style='display:block;'>&nbsp;</div>");
     selectsOffset = selects.offset();
@@ -139,31 +168,31 @@ function selectsMark(){
 function subCategorySelect(parentId, selectId, defaultTitle){
     var defaultTitle = (typeof(defaultTitle)=='undefined' || !defaultTitle)? '全部':defaultTitle;
     if(parentId == ""){
-	$('#'+selectId).hide();
-	$('#load_template_button').hide();
-	return;
+		$('#'+selectId).hide();
+		$('#load_template_button').hide();
+		return;
     }
     $.ajax({
-	url : '/guess/category/childrens/',
-	type : "POST",
-	cache : false,
-	data : {'parentId':parentId},
-	dataType : "json",
-	success : function(result) {
-	    if(result.state == 0){
-		alert(result.message);
-	    }else if(result.message){
-		var category = null;
-		var html = "<option value=''>" + defaultTitle + "</option>";
-		var count =result.message.length;
-		for (var i=0;i<=count-1;i++) {
-		    category = result.message[i];
-		    html += "<option value='" + category.id + "'>" + category.name + "</option>";
+		url : '/guess/category/childrens/',
+		type : "POST",
+		cache : false,
+		data : {'parentId':parentId},
+		dataType : "json",
+		success : function(result) {
+	    	if(result.state == 0){
+				alert(result.message);
+	    	}else if(result.message){
+				var category = null;
+				var html = "<option value=''>" + defaultTitle + "</option>";
+				var count =result.message.length;
+				for (var i=0;i<=count-1;i++) {
+		    		category = result.message[i];
+		    		html += "<option value='" + category.id + "'>" + category.name + "</option>";
+				}
+				$('#'+selectId).html(html);
+				$('#'+selectId).show();
+	    	}
 		}
-		$('#'+selectId).html(html);
-		$('#'+selectId).show();
-	    }
-	}
     });
 }
 
@@ -175,41 +204,75 @@ function subCategorySelect(parentId, selectId, defaultTitle){
 function guessPointSelect(cateId, selectId, defaultTitle){
     var defaultTitle = (typeof(defaultTitle)=='undefined' || !defaultTitle)? '请选择竞猜点':defaultTitle;
     if(cateId == ""){
-	$('#'+selectId).hide();
-	$('#load_template_button').hide();
-	return;
+		$('#'+selectId).hide();
+		$('#load_template_button').hide();
+		$('#add_guess_point_button').attr('href','/guess/guessPoint/add/').hide();
+		return;
     }
     $.ajax({
-	url : '/guess/guessPoint/ajaxgets/',
-	type : "POST",
-	cache : false,
-	data : {'cateId':cateId},
-	dataType : "json",
-	success : function(result) {
-	    if(result.state == 0){
-		alert(result.message);
-	    }else if(result.message){
-		var point = null;
-		var html = "<option value=''>" + defaultTitle + "</option>";
-		var count =result.message.length;
-		for (var i=0;i<=count-1;i++) {
-		    point = result.message[i];
-		    html += "<option value='" + point.id + "'>" + point.title + "</option>";
+		url : '/guess/guessPoint/ajaxgets/',
+		type : "POST",
+		cache : false,
+		data : {'cateId':cateId},
+		dataType : "json",
+		success : function(result) {
+	    	if(result.state == 0){
+				alert(result.message);
+	    	}else if(result.message){
+				var point = null;
+				var html = "<option value=''>" + defaultTitle + "</option>";
+				var count =result.message.length;
+				for (var i=0;i<=count-1;i++) {
+		    		point = result.message[i];
+		    		html += "<option value='" + point.id + "'>" + point.title + "</option>";
+				}
+				$('#'+selectId).html(html);
+				$('#'+selectId).show();
+				$('#add_guess_point_button').attr('href','/guess/guessPoint/add/?cateId='+cateId).show();
+	    	}
 		}
-		$('#'+selectId).html(html);
-		$('#'+selectId).show();
-		$('#add_guess_point_button').attr('href','/guess/guessPoint/add/?cateId='+cateId).show();
-	    }
-	}
     });
 }
-
+function ajaxGuessPointSelect(cateId, selectId, defaultTitle){
+	var defaultTitle = (typeof(defaultTitle)=='undefined' || !defaultTitle)? '请选择竞猜点':defaultTitle;
+    if(cateId == ""){
+		$('#'+selectId).hide();
+		$('#load_template_button').hide();
+		hideMenu();
+		return;
+    }
+    $.ajax({
+		url : '/guess/guessPoint/ajaxgets/',
+		type : "POST",
+		cache : false,
+		data : {'cateId':cateId},
+		dataType : "json",
+		success : function(result) {
+	    	if(result.state == 0){
+				alert(result.message);
+	    	}else if(result.message){
+				var point = null;
+				var html = "<option value=''>" + defaultTitle + "</option>";
+				var count =result.message.length;
+				for (var i=0;i<=count-1;i++) {
+		    		point = result.message[i];
+		    		html += "<option value='" + point.id + "'>" + point.title + "</option>";
+				}
+				$('#'+selectId).html(html);
+				$('#'+selectId+' option:last').attr('selected','selected'); 
+				$('#'+selectId).show();
+				guessPointSelected($('#'+selectId).val());
+				hideMenu();
+	    	}
+		}
+    });
+}
 function guessPointSelected(guessPointId){
     if(guessPointId){
-	$('#load_template_button').show();
+		$('#load_template_button').show();
     }else{
-	$('#load_template_button').hide();
-	$('#guess_add_template').empty();
+		$('#load_template_button').hide();
+		$('#guess_add_template').empty();
     }
 }
 
@@ -219,23 +282,22 @@ function guessPointSelected(guessPointId){
 function loadGuessAddTemplate(){
     var guessPointId=$('#guess_point_id').val();
     if(guessPointId.isEmpty()){
-	 $('#guess_add_template').html('');
-	return ;
+	 	$('#guess_add_template').html('');
+		return ;
     }
     var loading = "<dd><img src='/res/images/loading.gif'/><span>正在加载模板，请稍后...</span></dd>"
     $('#guess_add_template').html(loading);
     $.ajax({
-	url : '/guess/add/template/',
-	type : "POST",
-	cache : false,
-	data : {'guessPointId':guessPointId, 'inajax':'1'},
-	success : function(html) {
-	    $('#guess_add_template').html(html);
-	    //锁定分类和竞猜点，不能再修改
-	    selectsMark();
-	}
+		url : '/guess/add/template/',
+		type : "POST",
+		cache : false,
+		data : {'guessPointId':guessPointId, 'inajax':'1'},
+		success : function(html) {
+	    	$('#guess_add_template').html(html);
+	    	//锁定分类和竞猜点，不能再修改
+	    	selectsMark();
+		}
     });
-    
 }
 
 function closePlacard(){

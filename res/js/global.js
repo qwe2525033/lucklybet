@@ -1,14 +1,14 @@
 function notNanParseInt(string){
     var intValue = parseInt(string);
     if(isNaN(intValue)){
-	intValue = 0;
+		intValue = 0;
     }
     return intValue;
 }
 function notNanParseFloat(string){
     var floatValue = parseFloat(string);
     if(isNaN(floatValue)){
-	floatValue = 0.0;
+		floatValue = 0.0;
     }
     return floatValue;
 }
@@ -31,11 +31,11 @@ function getFormValue(form, inputName){
 	    var value = input.val();
 	}
     }else if(tagName == "select"){
-	var value = $("select[name='" + inputName + "'] option:selected").val(); 
+		var value = $("select[name='" + inputName + "'] option:selected").val(); 
     }else if(tagName = 'textarea'){
-	var value = input.val();
+		var value = input.val();
     }else{
-	var value = input.val();
+		var value = input.val();
     }
     return value;
 }
@@ -43,9 +43,7 @@ function getFormValue(form, inputName){
 function show_tip(str) {
     jq(".KK_Manage_loginTips_txt").html(str);
     jq(".KK_Manage_loginTips").slideDown("slow");
-    jq(".KK_Manage_loginTips").animate({
-	opacity : 0.9
-    }, "fast");
+    jq(".KK_Manage_loginTips").animate({opacity : 0.9}, "fast");
     clearInterval(time_id);
     time_id = setInterval(hide_tip, 2000);
 }
@@ -56,29 +54,29 @@ function hide_tip() {
 function showMessage() {
     var message = $.cookie('message');
     if(!message)
-	return;
+		return;
     show_tip(message);
     var options = {
-	path : '/',
-	expires : 0
+		path : '/',
+		expires : 0
     };
     $.cookie('message', null, options);
 }
 function changeTwoDecimal_f(x) {
     var f_x = parseFloat(x);
     if(isNaN(f_x)){
-	alert('function:changeTwoDecimal->parameter error');
-	return false;
+		alert('function:changeTwoDecimal->parameter error');
+		return false;
     }
     var f_x = Math.round(x * 100) / 100;
     var s_x = f_x.toString();
     var pos_decimal = s_x.indexOf('.');
     if(pos_decimal < 0){
-	pos_decimal = s_x.length;
-	s_x += '.';
+		pos_decimal = s_x.length;
+		s_x += '.';
     }
     while(s_x.length <= pos_decimal + 2){
-	s_x += '0';
+		s_x += '0';
     }
     return s_x;
 }
@@ -86,7 +84,7 @@ function changeTwoDecimal_f(x) {
  * 显示验证码
  * 
  * @param {String}
- *                id 验证码容器id
+ * id 验证码容器id
  */
 function captcha(id) {
     document.getElementById(id).src = "/common/captcha/show/?" + Math.random();

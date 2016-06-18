@@ -1,16 +1,18 @@
 {gtpl header}
+{res:js My97DatePicker/WdatePicker.js}
 {res:js guess.js}
 {res:js json2.js}
+{res:js param.js}
 <style>
 <!--
 	select{margin-bottom: 0px;}
 -->
 </style>
 	<div class="post_body">
-		<div class="caption">系统竞猜</div>
+		<div class="caption">发布竞猜</div>
         <ul class="nav nav-tabs" id="post_tab">
-			<li><a href="/guess/add/custom/">自定义竞猜</a></li>
-	        <li class="active"><a href="/guess/add/">系统竞猜</a></li>			
+			<!--<li><a href="/guess/add/custom/">自定义竞猜</a></li>-->
+	        <li class="active"><a href="/guess/add/" onclick="return false;">发布竞猜</a></li>			
         </ul>
         
 		<form id="ajaxform" name="ajaxform" action="/guess/add/?inajax=1" method="post"> 
@@ -21,24 +23,25 @@
 				<dl class="dl-horizontal">
 					<dt>竞猜点：</dt>
 					<dd class="c9" id="selects">
-						<select class="span2" id="cateid" name="cateid" onchange="subCategorySelect(this.value, 'sub_cateid', '请选择小分类')">
+						<select style="width:120px;" class="span2" id="cateid" name="cateid" onchange="subCategorySelect(this.value, 'sub_cateid', '请选择小分类')">
 							<option value="">请选择大分类</option>
 							{loop $rootCategorys $category}
                             <option value="{$category['id']}" {if $cateid == $category['id']}selected{/if}>{$category['name']}</option>
                             {/loop}
 						</select>
-						<select style="display:none;" class="span2" name="sub_cateid" id="sub_cateid" onchange="guessPointSelect(this.value, 'guess_point_id')">
+						<select style="display:none;width:120px;" class="span2" name="sub_cateid" id="sub_cateid" onchange="guessPointSelect(this.value, 'guess_point_id')">
 							<option value="">请选择小分类</option>
                             {loop $subCategorys $category}
                             <option value="{$category['id']}" {if $sub_cateid == $category['id']}selected{/if}>{$category['name']}</option>
                             {/loop}
 						</select>
-						<select  style="display:none;" class="span4" name="guess_point_id" id="guess_point_id" onchange="guessPointSelected(this.value)">
+						<select  style="display:none;width:220px;" class="span4" name="guess_point_id" id="guess_point_id" onchange="guessPointSelected(this.value)">
 							<option value="">请选择竞猜点</option>
 						</select>
 						&nbsp;<a href="/guess/guessPoint/add/" id="add_guess_point_button" onclick="ajaxmenu(event, this.id, 1, 0)" style="display:none;" class="btn">添加竞猜点</a>
 						&nbsp;<a href="javascript:;" style="display:none;" id="load_template_button" class="btn" onclick="loadGuessAddTemplate()">确定并加载模板</a>
 					</dd>
+					<dd>如果您需要添加竞猜分类,请联系"添加竞猜"客服</dd>
 					</dl>
 					<dl class="dl-horizontal" id="guess_add_template">
 					

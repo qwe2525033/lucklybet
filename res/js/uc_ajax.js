@@ -341,7 +341,6 @@ function ajaxpost_load() {
 
 
 function ajaxmenu(e, ctrlid, isbox, timeout, func) {
-	
 	var offset = 0;
 	var duration = 3;
 	
@@ -391,7 +390,6 @@ function ajaxmenu(e, ctrlid, isbox, timeout, func) {
 		if(!evaled) {
 			if(x.div) x.div.innerHTML = s;
 			showMenu(ctrlid, x.etype == 'click', offset, duration, timeout, 0, ctrlid, 1000, true);
-			//function
 			if(func) {
 				setTimeout(func + '(\'' + ctrlid + '\')', 10);
 			}

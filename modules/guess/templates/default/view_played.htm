@@ -72,7 +72,7 @@
 					<div class="n"><a href="{url /member/space/?uid=\[$user->getId()\]}">{$user->getName()}</a></div>
 					<div class="i">
 						{if $guess->wealthTypeIsBtc()}
-						<p>比特币：<span>{$user->getAvailableBtc()}</span></p>
+						<p>莱特币：<span>{$user->getAvailableBtc()}</span></p>
 						{elseif $guess->wealthTypeIsIntegral()}
 						<p>积分：<span>{$user->getAvailableIntegral()}</span></p>
 						{else}

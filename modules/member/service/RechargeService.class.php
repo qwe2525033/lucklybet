@@ -89,6 +89,30 @@ class RechargeService extends TransationSupport implements IRechargeService
         $this->gets($conditions, null, $page, $perpage);
     }
 
+    public function withdraw($userid, $address, $amount)
+    {
+        try {
+            $this->beginTransation();
+            $userDao = MD('User');
+            $userWithdrawDao = MD('UserWithdraw');
+            $user = $userDao->getOne(" 1 and id=" . $userid);
+            $withdraw = new UserWithdraw();
+            $withdraw->setUserid($user['id']);
+            $withdraw->setTowalletaddress($address);
+            $withdraw->setAmount($amount);
+            $withdraw->setAddtime(date("Y-m-d H:i:s", time()));
+            $user['available_btc'] = ($user['available_btc'] - $amount);
+            $userWithdrawDao->add($withdraw);
+            $userDao->update($user, $userid);
+            
+            $this->commit();
+            return true;
+        } catch (Exception $e) {
+            $this->rollBack();
+            return false;
+        }
+    }
+
     /**
      *
      * @see IRechargeService::pay()
@@ -96,7 +120,7 @@ class RechargeService extends TransationSupport implements IRechargeService
     public function pay($user, $recharge)
     {
         try {
-            // 给用户充值比特币
+            // 给用户充值莱特币
             $this->beginTransation();
             $io = array(
                 'to_user_id' => $recharge['user_id'],
@@ -136,7 +160,7 @@ class RechargeService extends TransationSupport implements IRechargeService
                         $io = array(
                             'to_user_id' => 0,
                             'from_user_id' => $inviter->getId(),
-                            'to_title' => "充值提成，邀请的用户{$userLink}充值了[{$recharge['btc']}]比特币",
+                            'to_title' => "充值提成，邀请的用户{$userLink}充值了[{$recharge['btc']}]莱特币",
                             'wealth_type' => Io::WEALTH_TYPE_MONEY,
                             'wealth' => $reward,
                             'to_balance' => $inviter->getAvailableBtc() + $reward

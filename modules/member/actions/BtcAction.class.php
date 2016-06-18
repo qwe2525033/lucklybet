@@ -1,7 +1,7 @@
 <?php
 
 /**
- * 我的比特币
+ * 我的莱特币
  * @author blueyb.java@gmail.com
  */
 class BtcAction extends UserCenterAction
@@ -12,7 +12,7 @@ class BtcAction extends UserCenterAction
         $yqcode = MemberServiceFactory::getUserService()->idToCode($this->user->getId());
         $request->assign('yqcode', $yqcode);
         $seo = array(
-            'title' => '我的比特币',
+            'title' => '我的莱特币',
             'description' => '',
             'keywords' => ''
         );
@@ -38,7 +38,7 @@ class BtcAction extends UserCenterAction
         $request->setAttribute('total', $total);
         $request->setAttribute('pages', $pages);
         $seo = array(
-            'title' => '比特币收支明细',
+            'title' => '莱特币收支明细',
             'description' => '',
             'keywords' => ''
         );
@@ -69,7 +69,7 @@ class BtcAction extends UserCenterAction
                 show_message("接收用户不存在");
             }
             if ($toUser['id'] == $this->user->getId()) {
-                show_message("不能给自己赠送比特币");
+                show_message("不能给自己赠送莱特币");
             }
             if ($btc < 1) {
                 show_message("赠送金额不能为小于1!");

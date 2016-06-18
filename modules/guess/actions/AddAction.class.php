@@ -86,7 +86,7 @@ class AddAction extends UserCenterAction
             }
             $guess->setPlayDatas($playWayDatas);
             if (! $guess->wealthIsEnough($this->user)) {
-                show_message('你的积分或比特币不够，请调整玩法');
+                show_message('你的积分或莱特币不够，请调整玩法');
             }
             $guess->setUser($this->user);
             if ($guessService->add($guess)) {

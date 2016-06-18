@@ -51,7 +51,7 @@ class Guess extends DynamicModelTransformSupport
     const NAME_BETTING_UPPER_LIMIT = 'bul';
 
     /**
-     * 财富类型:比特币
+     * 财富类型:莱特币
      *
      * @var int
      */
@@ -657,7 +657,7 @@ class Guess extends DynamicModelTransformSupport
     }
 
     /**
-     * 是否是比特币类型财富
+     * 是否是莱特币类型财富
      * return boolean
      */
     public function wealthTypeIsBtc()
@@ -689,7 +689,7 @@ class Guess extends DynamicModelTransformSupport
     }
 
     /**
-     * 用户的比特币是否足够
+     * 用户的莱特币是否足够
      *
      * @param User $user            
      * @return boolean
@@ -774,7 +774,7 @@ class Guess extends DynamicModelTransformSupport
     public function getWealthTypeName()
     {
         if ($this->wealthTypeIsBtc()) {
-            return "比特币";
+            return "莱特币";
         } elseif ($this->wealthTypeIsIntegral()) {
             return "积分";
         } else {

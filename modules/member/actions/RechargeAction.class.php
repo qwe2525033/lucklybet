@@ -64,7 +64,7 @@ class RechargeAction extends UserCenterAction
                 'payment_btc_type' => 'CNY',
                 'payment_subject' => '会员充值',
                 'payment_total_fee' => $recharge['btc'],
-                'payment_body' => '比特币充值,一元等于一比特币'
+                'payment_body' => '莱特币充值,一元等于一莱特币'
             );
             try {
                 // 创建与支付类型对应的支付类
@@ -89,11 +89,11 @@ class RechargeAction extends UserCenterAction
     {
         $conditions = " user_id = '{$this->user->getId()}'";
         $orders = array(
-            'create_time' => 'desc'
+            'add_time' => 'desc'
         );
         $page = getPage();
         $perpage = 5;
-        $rechargeDao = MD('Recharge');
+        $rechargeDao = MD('UserDeposit');
         $items = $rechargeDao->gets($conditions, $gets, $orders, $page, $perpage);
         $total = $rechargeDao->count($conditions);
         $pages = multi_page($total, $perpage, $page);
@@ -109,6 +109,67 @@ class RechargeAction extends UserCenterAction
         );
         $request->assign('seo', $seo);
         $this->setView('recharge_history');
+    }
+
+    public function withdraw(HttpRequest $request)
+    {
+        if ($request->isPost()) {
+            $amount = floatval($request->getParameter('amount'));
+            $address = $request->getParameter('address');
+            if ($amount <= 0) {
+                show_message("提现金额错误！");
+            }
+            if ($address == null || trim($address) == "") {
+                show_message("提现地址不能为空！");
+            }
+            $configService = CommonServiceFactory::getConfigService();
+            $shoudizhi = $configService->get('chongzhi_shoudizhi');
+            if (substr($address, 0, 1) != $shoudizhi) {
+                show_message($address . "提现地址不正确！");
+            }
+            $UserDao = MD('User');
+            $user = $UserDao->getOne(" 1 and btc_address ='" . $address . "'");
+            if ($user != null) {
+                show_message("无法使用站内地址提现！");
+            }
+            $rechargeService = MemberServiceFactory::getRechargeService();
+            $result = $rechargeService->withdraw($this->user->getId(), $address, $amount);
+            if ($result) {
+                show_message("提现成功！");
+            } else {
+                show_message("提现失败！");
+            }
+        } else {
+            $request->setAttribute('useramount', $this->user->getAvailableBtc());
+            $this->setView('withdraw_index');
+        }
+    }
+
+    public function withdrawHistory(HttpRequest $request)
+    {
+        $userWithdrawDao = MD('UserWithdraw');
+        $conditions = " user_id = '{$this->user->getId()}'";
+        $orders = array(
+            'add_time' => 'desc'
+        );
+        $page = getPage();
+        $perpage = 5;
+        $items = $userWithdrawDao->gets($conditions, $gets, $orders, $page, $perpage);
+        $total = $userWithdrawDao->count($conditions);
+        $pages = multi_page($total, $perpage, $page);
+        
+        $request->setAttribute('items', $items);
+        $request->setAttribute('total', $total);
+        $request->setAttribute('pages', $pages);
+        
+        $seo = array(
+            'title' => '充值记录',
+            'description' => '',
+            'keywords' => ''
+        );
+        $request->assign('seo', $seo);
+        $request->setAttribute('useramount', $this->user->getAvailableBtc());
+        $this->setView('recharge_withdraw');
     }
 
     /**
@@ -148,7 +209,7 @@ class RechargeAction extends UserCenterAction
             'payment_btc_type' => 'CNY',
             'payment_subject' => '会员充值',
             'payment_total_fee' => $recharge['btc'],
-            'payment_body' => '比特币充值,一元等于一比特币'
+            'payment_body' => '莱特币充值,一元等于一莱特币'
         );
         try {
             // 创建与支付类型对应的支付类

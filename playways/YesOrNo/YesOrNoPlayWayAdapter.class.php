@@ -24,11 +24,11 @@ class YesOrNoPlayWayAdapter extends IPlayWayAdapter
         $option->setLabel($guessPointParameter->getLabel());
         $option->setValue($guessPointParameter->getName());
         $parameter->addOption($option);
-        // 打平参数
-        $option = new PlayWayParameterOption();
-        $option->setLabel('打平');
-        $option->setValue(self::PARAMETER_NAME_EQUAL);
-        $parameter->addOption($option);
+        // // 打平参数
+        // $option = new PlayWayParameterOption();
+        // $option->setLabel('打平');
+        // $option->setValue(self::PARAMETER_NAME_EQUAL);
+        // $parameter->addOption($option);
         // 第二参数
         $guessPointParameter = next($guessPointParameters);
         $option = new PlayWayParameterOption();

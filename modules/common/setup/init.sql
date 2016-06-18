@@ -12,7 +12,7 @@ INSERT INTO `yyx_config`(`tab`,`key`,`type`,`options`,`value`,`sort_num`) VALUES
 INSERT INTO `yyx_config`(`tab`,`key`,`type`,`options`,`value`,`sort_num`) VALUES('basic','copyright','text','','Copyright © 2012-2013 Yuyanxing 版权所有','0');
 
 INSERT INTO `yyx_config`(`tab`,`key`,`type`,`options`,`value`,`sort_num`) VALUES('btc','integral_invite','text','','邀请用户注册赠送积分','100');
-INSERT INTO `yyx_config`(`tab`,`key`,`type`,`options`,`value`,`sort_num`) VALUES('btc','recharge_inviter_reward','text','','用户充值奖励比特币比例','100');
+INSERT INTO `yyx_config`(`tab`,`key`,`type`,`options`,`value`,`sort_num`) VALUES('btc','recharge_inviter_reward','text','','用户充值奖励莱特币比例','100');
 INSERT INTO `yyx_config`(`tab`,`key`,`type`,`options`,`value`,`sort_num`) VALUES('btc','integral_share','text','','竞猜分享积分奖励','100');
 INSERT INTO `yyx_config`(`tab`,`key`,`type`,`options`,`value`,`sort_num`) VALUES('btc','guess_tax','text','','竞猜税收比例','100');
 INSERT INTO `yyx_config`(`tab`,`key`,`type`,`options`,`value`,`sort_num`) VALUES('btc','guess_add_check','radio','0,开启|1,关闭','1','0');

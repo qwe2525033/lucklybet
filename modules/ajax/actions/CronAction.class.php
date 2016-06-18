@@ -18,12 +18,19 @@ class CronAction extends CommonAction
 
     private $userDeposit;
 
+    private $querenshu;
+
     function __construct()
     {
         $this->addressMultiaddrs = MD('AddressMultiaddrs');
         $this->user = MD('User');
         $this->userDeposit = MD('UserDeposit');
         $this->btctool = new BtcTools();
+        $configService = CommonServiceFactory::getConfigService();
+        $this->querenshu = $configService->get('chongzhi_querenshu');
+        if ($this->querenshu <= 0) {
+            $this->querenshu = 3;
+        }
     }
 
     /**
@@ -119,7 +126,7 @@ class CronAction extends CommonAction
 
     private function getUserDepositForIsConf6()
     {
-        return $this->userDeposit->gets(" 1 and confirmations < 6");
+        return $this->userDeposit->gets(" 1 and confirmations < " . $this->querenshu);
     }
     
     // ==========================================================
@@ -185,7 +192,7 @@ class CronAction extends CommonAction
                         $this->update($value);
                     } else {
                         $txinfo = $this->btctool->getTxinfo($value['txid']);
-                        if ($txinfo != null && $txinfo != null && count($txinfo->details) > 0 && $txinfo->confirmations >= 1) {
+                        if ($txinfo != null && $txinfo != null && count($txinfo->details) > 0 && $txinfo->confirmations >= $this->querenshu) {
                             if (count($txinfo->details) > 1) {
                                 $is_receive = true;
                                 foreach ($txinfo->details as $details) {

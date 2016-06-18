@@ -492,6 +492,8 @@ return array (
   'Share' => 'E:\\phpWork\\lucklybet\\modules/member\\model\\Share.class.php',
   'member.model.User' => 'E:\\phpWork\\lucklybet\\modules/member\\model\\User.class.php',
   'User' => 'E:\\phpWork\\lucklybet\\modules/member\\model\\User.class.php',
+  'member.model.UserWithdraw' => 'E:\\phpWork\\lucklybet\\modules/member\\model\\UserWithdraw.class.php',
+  'UserWithdraw' => 'E:\\phpWork\\lucklybet\\modules/member\\model\\UserWithdraw.class.php',
   'member.model.Weibo' => 'E:\\phpWork\\lucklybet\\modules/member\\model\\Weibo.class.php',
   'Weibo' => 'E:\\phpWork\\lucklybet\\modules/member\\model\\Weibo.class.php',
   'member.model.*' => 
@@ -505,7 +507,8 @@ return array (
     6 => 'E:\\phpWork\\lucklybet\\modules/member\\model\\Recharge.class.php',
     7 => 'E:\\phpWork\\lucklybet\\modules/member\\model\\Share.class.php',
     8 => 'E:\\phpWork\\lucklybet\\modules/member\\model\\User.class.php',
-    9 => 'E:\\phpWork\\lucklybet\\modules/member\\model\\Weibo.class.php',
+    9 => 'E:\\phpWork\\lucklybet\\modules/member\\model\\UserWithdraw.class.php',
+    10 => 'E:\\phpWork\\lucklybet\\modules/member\\model\\Weibo.class.php',
   ),
   'member.service.FollowService' => 'E:\\phpWork\\lucklybet\\modules/member\\service\\FollowService.class.php',
   'FollowService' => 'E:\\phpWork\\lucklybet\\modules/member\\service\\FollowService.class.php',

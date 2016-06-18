@@ -67,14 +67,14 @@ class Goods extends DynamicModelTransformSupport
     private $canExchange;
 
     /**
-     * 兑换比特币
+     * 兑换莱特币
      *
      * @var int
      */
     private $btc;
 
     /**
-     * 用户比特币下限
+     * 用户莱特币下限
      *
      * @var int
      */

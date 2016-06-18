@@ -588,7 +588,7 @@ class GuessService extends TransationSupport implements IGuessService
                     $guessWinWealth = $guessWinWealth - $playWinWealth;
                 }
                 // 竞猜判定通知庄家
-                // 更新庄家，避免比特币不同步
+                // 更新庄家，避免莱特币不同步
                 $guessUser = $userService->get($guess->getUserId());
                 $guess->setUser($guess);
                 if ($guessUser->getConfig('guess_result')) {

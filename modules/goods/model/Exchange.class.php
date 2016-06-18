@@ -44,7 +44,7 @@ class Exchange extends DynamicModelTransformSupport
     private $isExchange;
 
     /**
-     * 兑换比特币
+     * 兑换莱特币
      * 
      * @var int
      */

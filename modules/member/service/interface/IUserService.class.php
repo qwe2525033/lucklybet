@@ -195,7 +195,7 @@ interface IUserService
     public function makersAuth($userId, $auth);
 
     /**
-     * 用户比特币收支
+     * 用户莱特币收支
      *
      * @param $freezeCode 冻结代码,小于0冻结，大于0解冻            
      * @return boolean
@@ -227,7 +227,7 @@ interface IUserService
     public function updateGuessAccuracy($userId);
 
     /**
-     * 赠送比特币
+     * 赠送莱特币
      *
      * @param User $fromUser            
      * @param array $toUser            

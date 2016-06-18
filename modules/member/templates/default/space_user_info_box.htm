@@ -15,8 +15,8 @@
 		{if $user->getId() == $spaceUser->getId()}
 		<p style="clear: left;">当前积分：<span>{$spaceUser->getAvailableIntegral()}</span> <a class="btn btn-primary" href="/member/integral/io/" >查看明细</a></p>
 		<p>
-			当前比特币：<span>{$spaceUser->getAvailableBtc()}</span>
-			<a class="btn btn-primary"  href="/member/recharge/index/" id="btc_recharge" onclick="ajaxmenu(event, this.id, 1)">充 值</a>&nbsp; &nbsp; <a class="btn btn-primary"  href="/member/btc/handsel/" id="btc_handsel" onclick="ajaxmenu(event, this.id, 1)">转 赠</a>&nbsp; &nbsp; <a class="btn btn-primary" href="/member/btc/io/" >查看明细</a>
+			当前莱特币：<span>{$spaceUser->getAvailableBtc()}</span>
+			<a class="btn btn-primary"  href="/member/recharge/index/" id="btc_recharge" onclick="ajaxmenu(event, this.id, 1)">充 值</a>&nbsp; &nbsp; <a class="btn btn-primary" href="/member/btc/io/" >查看明细</a>
 		</p>
 		{/if}
 	</div>

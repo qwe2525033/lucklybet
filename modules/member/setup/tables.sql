@@ -121,7 +121,7 @@ CREATE TABLE `yyx_io`(
 	`to_title` varchar(255) not null default '' comment '收入标题',
 	`type` smallint(3) DEFAULT '0' COMMENT '收支类型,如充值，投资',
 	`source_id` int(11) unsigned not null default 0 comment '收支源ID',
-	`wealth_type` tinyint(1) unsigned not null default 1 comment '财富类型 1为比特币 2为积分',
+	`wealth_type` tinyint(1) unsigned not null default 1 comment '财富类型 1为莱特币 2为积分',
 	`wealth` double(10,2) not null default 0 comment '财富数',
 	`tax`  double(10,2) not null default 0 comment '税',
 	`from_balance` double(10,2) not null default 0 comment '支出人余额',

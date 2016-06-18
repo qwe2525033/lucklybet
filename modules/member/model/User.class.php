@@ -308,7 +308,7 @@ class User extends DynamicModelTransformSupport
             'guess_custom_end' => '发布的自定义竞猜已结束',
             'guess_play_invite' => '有人邀请我参与竞猜'
         ),
-        // 'wealth_change' => '比特币与积分变更'
+        // 'wealth_change' => '莱特币与积分变更'
         'trend' => array(
             'trend_condition' => array(
                 'name' => '按条件',

@@ -9,7 +9,7 @@ GuessAddHelper.setUserIntegral({$user->getAvailableIntegral()});
 <dt>竞猜标题：</dt>
 <dd class="c9">
 	 <!--input type="text" class="span4" name="title" value="{$guessPoint->getTitle()}" /-->
-	 <input type="text" class="span4" name="title" placeholder="输入竞猜标题" />
+	 <input type="text" class="span4" name="title" readonly value="{$guessPoint->getTitle()}"/>
 </dd>
 <dt>竞猜截止时间：</dt>
 <dd class="c9">
@@ -23,7 +23,7 @@ GuessAddHelper.setUserIntegral({$user->getAvailableIntegral()});
 <dt>下注形式：</dt>
 <dd>
 	<label class="radio inline">
-		<input type="radio" name="wealth_type" value="{run echo Guess::WEALTH_TYPE_MONEY}" checked="checked" onclick="GuessAddHelper.setWealthType(this.value)"/> 比特币投注
+		<input type="radio" name="wealth_type" value="{run echo Guess::WEALTH_TYPE_MONEY}" checked="checked" onclick="GuessAddHelper.setWealthType(this.value)"/> 莱特币投注
 	</label>
 	<!-- label class="radio inline">
 		<input type="radio" name="wealth_type" value="{run echo Guess::WEALTH_TYPE_INTEGRAL}" onclick="GuessAddHelper.setWealthType(this.value)"/> 积分投注
