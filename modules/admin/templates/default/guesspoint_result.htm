@@ -17,7 +17,44 @@
 	                    <a href="{$index_url}" style="float: right;">返回列表</a>
 	                </span>
                 </h3>
-                <form action="{url /$currentModule/$currentAction/result/}" method="post" onsubmit="return opConfirm('操作不可恢复，是否继续')">
+
+
+                <h2 style="font-size: 20px">竞猜点-下注列表</h2>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <td>用户名</td>
+                        <td>投注总金额</td>
+                        <td>投注情况</td>
+                        <td>投注日期</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {loop $allPlays $plays}
+                    {run $guess = $plays->getGuess() }
+                        <tr>
+                            <td>{$plays->getUser()->getName()}</td>
+                            <td>{$plays->getWealth()}</td>
+                            <td>
+                                {loop $plays->getPlayDatas() $playData}
+                                {run $tempPlayDatas = $guess->getPlayDatas()}
+                                <!--{run var_dump($playData);}-->
+                                {run $options = $tempPlayDatas[$playData->getPlayWayId()]->getParameter()->getOptions()}
+                                    <p>
+                                        <span>{$options[$playData->getChoose()]->getLabel()}</span>
+                                        <span>(投注：{$playData->getWealth()})</span>
+                                    </p>
+                                {/loop}
+                            </td>
+                            <td>{run echo date("Y-m-d h:i", $plays->getCreateTime())}</td>
+                        </tr>
+                    {/loop}
+                    </tbody>
+                </table>
+
+
+
+                <form action="{url /$currentModule/$currentAction/doResult/}" method="post" onsubmit="return opConfirm('操作不可恢复，是否继续')">
                     <div class="KK_content_list2_con marginTop10">
                         <div class="KK_content_list2_table">
                             <table>

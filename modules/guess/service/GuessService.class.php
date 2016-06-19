@@ -573,12 +573,12 @@ class GuessService extends TransationSupport implements IGuessService
                     'id' => $guess->getId(),
                     'title' => $guess->getTitle()
                 ));
-                // 参与竞猜事件的所有用户
                 foreach ($plays as $play) {
+                    if ( $play->getStatus() == 1 ) continue;
                     // 对用户的竞猜参与进行判定
                     $playUser = $play->getUser();
                     $playWinWealth = 0;
-//
+
                     foreach ($play->getPlayDatas() as $playData) {
                         // 创建这个玩法的参数适配器
                         $playData->setPlay($play);
@@ -780,6 +780,10 @@ class GuessService extends TransationSupport implements IGuessService
             $this->rollBack();
             return false;
         }
+    }
+
+    public function getGuess(GuessPoint $guessPoint) {
+        return $this->getGuessPointGuesses($guessPoint);
     }
 
     private function getGuessPointGuesses(GuessPoint $guessPoint)

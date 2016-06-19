@@ -262,7 +262,44 @@ class GuessPointAction extends AbstractAdminAction{
 		}
 	}
 
-	public function result(HttpRequest $request){
+	/**
+	 * 设置判定结果的面板
+	 **/
+	public function result(HttpRequest $request) {
+		$id = $request->getParameter('id');
+		if(empty($id)){
+			show_message(get_lang('no_record_common'));
+		}
+		$guessService = GuessServiceFactory::getGuessService();
+		$guessPoint = $guessService->getGuessPoint($id);
+		$playService = GuessServiceFactory::getPlayService();
+		$guesses = $guessService->getGuess($guessPoint);
+
+		$allPlays = array();
+		foreach ($guesses as $guess) {
+			$plays = $playService->getPlays($guess);
+			$allPlays = array_merge($allPlays, $plays);
+		}
+
+
+//var_dump($allPlays);exit;
+
+
+		if(!$guessPoint){
+			show_message('竞猜点不存在');
+		}
+		if(!$guessPoint->getParams()){
+			show_message('该竞猜点没有参数，不能进行结果判定!');
+		}
+
+		$request->setAttribute('allPlays', $allPlays);
+		$request->setAttribute('guesses', $guesses);
+		$request->setAttribute('item', $guessPoint);
+		$request->assign('title', '结果判定');
+	}
+
+
+	public function doResult(HttpRequest $request){
 		$id = $request->getParameter('id');
 		if(empty($id)){
 			show_message(get_lang('no_record_common'));
@@ -275,27 +312,24 @@ class GuessPointAction extends AbstractAdminAction{
 		if(!$guessPoint->getParams()){
 			show_message('该竞猜点没有参数，不能进行结果判定!');
 		}
-		$request->setAttribute('item', $guessPoint);
-		if(!$request->isPost()){
-			$request->assign('title', '结果判定');
-		}else{
-			foreach($guessPoint->getParams() as $param){
-				$param->setValue(trim($request->getParameter($param->getName())));
-			}
-			$guessPointDao = MD('GuessPoint');
 
-			$res_guessPoint = $guessPointDao->update(array('params'=>serialize($guessPoint->getParams())), $id);
-
-			if ($res_guessPoint) {
-				$res_rudge = $guessService->guessPointRudge($guessPoint);
-			}
-
-			if ( $res_guessPoint && $res_rudge ) {
-				$this->setMessage('op_success');
-				$request->redirect($request->getAttribute('index_url'));
-			} else {
-				die(get_lang('operation_failed_common'));
-			}
+		foreach($guessPoint->getParams() as $param){
+			$param->setValue(trim($request->getParameter($param->getName())));
 		}
+		$guessPointDao = MD('GuessPoint');
+
+		$res_guessPoint = $guessPointDao->update(array('params'=>serialize($guessPoint->getParams())), $id);
+
+		if ($res_guessPoint) {
+			$res_rudge = $guessService->guessPointRudge($guessPoint);
+		}
+
+		if ( $res_guessPoint && $res_rudge ) {
+			$this->setMessage('op_success');
+			$request->redirect($request->getAttribute('index_url'));
+		} else {
+			die(get_lang('operation_failed_common'));
+		}
+
 	}
 }
