@@ -99,6 +99,85 @@ class PlayService extends TransationSupport implements IPlayService{
 			return false;
 		}
 	}
+
+	public function update(Play $play, $addPlayWealth, $play_way_id) {
+		if(!$play || $play->isEmpty() || $play->getCustom()) return false;
+		$user = $play->getUser();
+		$guess = $play->getGuess();
+		$playDatas = $play->getPlayDatas();
+		$playData = $playDatas[$play_way_id];
+		$guessLink = NoticeService::makeGuessLink(array('id'=>$guess->getId(), 'title'=>$guess->getTitle()));
+
+		try{
+			$this->beginTransation();
+			$id = $play->getId();
+
+			//增加投注
+			$playData->setWealth($playData->getWealth() + $addPlayWealth);
+			$playDatas[$play_way_id] = $playData;
+			$play->setPlayDatas(serialize($playDatas));
+			$success = $this->dao->update($play, $id);
+			if(!$success){
+				$this->rollBack();
+				return false;
+			}
+
+			//冻结投注金
+			$userService = MemberServiceFactory::getUserService();
+			if($play->wealthTypeIsBtc()){
+				$io = array(
+					'from_user_id' => $user->getId(),
+					'to_user_id' => 0,
+					'from_title' => "添加注码{$guessLink}",
+					'wealth_type' => Io::WEALTH_TYPE_MONEY,
+					'wealth' => $addPlayWealth,
+					'from_balance' => $user->getAvailableBtc() - $addPlayWealth
+				);
+				if(!$userService->btc($io, -1)){
+					$this->rollBack();
+					return false;
+				}
+			}elseif($play->wealthTypeIsIntegral()){
+				$io = array(
+					'from_user_id' => $user->getId(),
+					'to_user_id' => 0,
+					'from_title' => "添加注码{$guessLink}",
+					'wealth_type' => Io::WEALTH_TYPE_INTEGRAL,
+					'wealth' => $addPlayWealth,
+					'from_balance' => $user->getAvailableIntegral() - $addPlayWealth
+				);
+				if(!$userService->integral($io, -1)){
+					$this->rollBack();
+					return false;
+				}
+			}
+			//更新竞猜
+			$guessDao = MD('Guess');
+			$playWealth = $guess->getPlayWealth() + $addPlayWealth;
+			foreach($guess->getPlayDatas() as $playWayData){
+				if(isset($playDatas[$playWayData->getId()])){
+					$playWayData->addPlayWealth($playDatas[$playWayData->getId()]->getChoose(), $addPlayWealth);
+					$guess->addPlayData($playWayData);
+				}
+			}
+
+			$update = array(
+				'play_wealth'=>$playWealth,
+				'play_datas'=>serialize($guess->getPlayDatas())
+			);
+
+			if(!$guessDao->update($update, $guess->getId())){
+				$this->rollBack();
+				return false;
+			}
+
+			$this->commit();
+			return true;
+		}catch(Exception $e){
+			$this->rollBack();
+			return false;
+		}
+	}
 	
 	/*
 	 * @see IPlayService::count()

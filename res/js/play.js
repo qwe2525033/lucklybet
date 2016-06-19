@@ -178,5 +178,35 @@ var GuessPlayHelper = {
 	    }
 	}
 	return totalWealth;
-    }
+    },
+
+	changePlay: function (playWayId, el) {
+		var $btn = $(el);
+		var user_play_id = $btn.attr('user-play-id');
+		var play_way_id = $btn.attr('play-way-id');
+
+		var value = $btn.parents('.modal-body').find('.change-play-value').val();
+
+		if ( value <= 0 ) {
+			alert('请输入添加额度');
+			return false
+		}
+
+		$.ajax({
+			url: '/guess/play/fixed/',
+			type: "POST",
+			data: {
+				id: user_play_id,
+				play_way_id: play_way_id,
+				value: value
+			},
+			dataType: "json"
+		}).then(function(res) {
+			alert(res.message)
+			if (res.state == 1) {
+				window.location.reload()
+			}
+		})
+
+	}
 }
