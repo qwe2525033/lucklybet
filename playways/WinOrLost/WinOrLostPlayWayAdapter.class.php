@@ -42,7 +42,9 @@ class WinOrLostPlayWayAdapter extends IPlayWayAdapter{
 	}
 	
 	/*
+	 * 浮动赔率 （没有庄家的对赌）
 	 * @see IPlayWayAdapter::resultRudge()
+	 * @return Inter  0->
 	 */
 	public function resultRudge(PlayData $playData){
 		$play = $playData->getPlay();
@@ -53,25 +55,31 @@ class WinOrLostPlayWayAdapter extends IPlayWayAdapter{
 		$guessPointParameters = $guessPoint->getParams();
 		$firstParameter = current($guessPointParameters);
 		$secondParameter = next($guessPointParameters);
+		$thirdParameter = next($guessPointParameters);
+
 		if($firstParameter->isEmptyValue() || $secondParameter->isEmptyValue()){
 			return false;
 		}
 		$chooseValue = $playData->getChoose();
+
 		if($chooseValue == ''){
 			return false;
 		}
 		$chooseOods = $playWayData->getOptionOdds($chooseValue);
+
+		// 计算 事件结果
+		if($firstParameter->getValue() > $secondParameter->getValue()){
+			$correctChoose = $firstParameter->getName();
+		}elseif($firstParameter->getValue() == $secondParameter->getValue()){
+			$correctChoose = $thirdParameter->getName();
+		}else{
+			$correctChoose = $secondParameter->getName();
+		}
+
 		if($chooseOods == 0){
 			//没有赔率,当打平
 			$winWealth = 0;
 		}else{
-			if($firstParameter->getValue() > $secondParameter->getValue()){
-				$correctChoose = $firstParameter->getName();
-			}elseif($firstParameter->getValue() == $secondParameter->getValue()){
-				$correctChoose = IPlayWayAdapter::PARAMETER_NAME_EQUAL;
-			}else{
-				$correctChoose = $secondParameter->getName();
-			}
 			$isCorrect = ($correctChoose == $chooseValue);
 			if($isCorrect){
 				$winWealth = $chooseOods * $playData->getWealth();
@@ -80,6 +88,17 @@ class WinOrLostPlayWayAdapter extends IPlayWayAdapter{
 				$winWealth = 0 - $playData->getWealth();
 			}
 		}
+
+		// 没有下注的选项胜出（odds赔率为0）
+		// 对赌不成立， 退回所有下注的钱
+		foreach ( $guessPointParameters as $parameter) {
+			$parameter_name = $parameter->getName();
+			$chooseOods = $playWayData->getOptionOdds($parameter_name);
+			if ( $correctChoose ===  $parameter_name && $chooseOods === 0 ) {
+				$winWealth = 0;
+			}
+		}
+
 		$playData->setWinWealth($winWealth);
 		return true;
 	}

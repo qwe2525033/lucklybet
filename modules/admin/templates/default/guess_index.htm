@@ -97,7 +97,10 @@
 								<td align="left">{date $item['create_time'] Y-m-d}</td>
 								<td align="left">
 									{if $item['play_deadline'] > $time && ($item['status'] == 1 || $item['status'] == 2 )}
-										<a href="{url /$currentModule/$currentAction/end/?id=$item[id]}">提前结束</a>&nbsp;
+										<a href="javascript:
+										 if (confirm('是否确认退回并关闭竞猜事件'))
+											window.location.href='{url /$currentModule/$currentAction/end/?id=$item[id]}'"
+										>提前结束</a>&nbsp;
 										<a href="javascript:
 										 if (confirm('是否确认退回并关闭竞猜事件'))
 											window.location.href='{url /$currentModule/$currentAction/back/?id=$item[id]}'"

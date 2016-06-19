@@ -283,22 +283,18 @@ class GuessPointAction extends AbstractAdminAction{
 				$param->setValue(trim($request->getParameter($param->getName())));
 			}
 			$guessPointDao = MD('GuessPoint');
-			$success = $guessPointDao->update(array('params'=>serialize($guessPoint->getParams())), $id);
-			if($success){
-				$success = $guessService->guessPointRudge($guessPoint);
-				if($success){
-					//操作成功
-					$this->setMessage('op_success');
-					$request->redirect($request->getAttribute('index_url'));
-				}else{
-					//操作失败
-					die(get_lang('operation_failed_common'));
-				//	show_message(get_lang('operation_failed_common'));
-				}
-			}else{
-				//操作失败
+
+			$res_guessPoint = $guessPointDao->update(array('params'=>serialize($guessPoint->getParams())), $id);
+
+			if ($res_guessPoint) {
+				$res_rudge = $guessService->guessPointRudge($guessPoint);
+			}
+
+			if ( $res_guessPoint && $res_rudge ) {
+				$this->setMessage('op_success');
+				$request->redirect($request->getAttribute('index_url'));
+			} else {
 				die(get_lang('operation_failed_common'));
-				//show_message(get_lang('operation_failed_common'));
 			}
 		}
 	}
