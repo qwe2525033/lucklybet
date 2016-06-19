@@ -381,8 +381,8 @@ class GuessService extends TransationSupport implements IGuessService
      */
     public function close(Guess $guess)
     {
-        if (! $guess || $guess->getPlayCount())
-            return false;
+        if ( !$guess ) return false;
+
         try {
             $this->beginTransation();
             // 改变状态
@@ -500,7 +500,7 @@ class GuessService extends TransationSupport implements IGuessService
                     'create_time' => time()
                 );
                 $io['wealth_type'] = Io::WEALTH_TYPE_MONEY;
-                $io['to_title'] = "「退回{$playKeepWealth},解冻{$playKeepWealth}」竞猜{$guessLink}公布结果";
+                $io['to_title'] = "「解冻{$playKeepWealth}」竞猜{$guessLink}公布结果";
 
                 $io['wealth'] = $playKeepWealth;
                 $io['to_balance'] = $playUser->getAvailableBtc() + $io['wealth'];

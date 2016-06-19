@@ -207,7 +207,7 @@ class GuessAction extends AbstractAdminAction{
 		}
 	}
 
-
+	// 退回 并且关闭
 	public function back(HttpRequest $request){
 		$id = $request->getParameter('id');
 		if(empty($id)){
@@ -216,11 +216,19 @@ class GuessAction extends AbstractAdminAction{
 
 		$guessService = GuessServiceFactory::getGuessService();
 		$guess = $guessService->get($id, true);
-		$success = $guessService->back($guess);
-	
-		var_dump($success);exit;
-        
-		// echo $id;exit;
+		$success = $guessService->close($guess);
+
+		if($success){
+			$success = $guessService->back($guess);
+			if($success){
+				$request->redirect($request->getAttribute('index_url'));
+			}else{
+				show_message(get_lang('operation_failed_common'));
+			}
+		}else{
+			show_message(get_lang('operation_failed_common'));
+		}
+
 	}
 	
 	public function rudge(HttpRequest $request){
