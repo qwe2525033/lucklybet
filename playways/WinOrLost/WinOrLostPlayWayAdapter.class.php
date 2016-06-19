@@ -71,12 +71,16 @@ class WinOrLostPlayWayAdapter extends IPlayWayAdapter{
 		if($firstParameter->getValue() > $secondParameter->getValue()){
 			$correctChoose = $firstParameter->getName();
 		}elseif($firstParameter->getValue() == $secondParameter->getValue()){
-			$correctChoose = $thirdParameter->getName();
+			$correctChoose = IPlayWayAdapter::PARAMETER_NAME_EQUAL;
 		}else{
 			$correctChoose = $secondParameter->getName();
 		}
 
-		if($chooseOods == 0){
+		// 获胜选项的赔率
+		// 如果为0 则对赌不成立
+		$winOods = $playWayData->getOptionOdds($correctChoose);
+
+		if($chooseOods == 0  || $winOods === 0){
 			//没有赔率,当打平
 			$winWealth = 0;
 		}else{
@@ -86,16 +90,6 @@ class WinOrLostPlayWayAdapter extends IPlayWayAdapter{
 			}else{
 				//输
 				$winWealth = 0 - $playData->getWealth();
-			}
-		}
-
-		// 没有下注的选项胜出（odds赔率为0）
-		// 对赌不成立， 退回所有下注的钱
-		foreach ( $guessPointParameters as $parameter) {
-			$parameter_name = $parameter->getName();
-			$chooseOods = $playWayData->getOptionOdds($parameter_name);
-			if ( $correctChoose ===  $parameter_name && $chooseOods === 0 ) {
-				$winWealth = 0;
 			}
 		}
 
