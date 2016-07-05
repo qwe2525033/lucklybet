@@ -35,6 +35,7 @@
 				<div class="clear"></div>
 				<div id="play_lists"></div>
 				{loop $guess->getPlayDatas() $playData}
+
 				{run $newsId = $playWays[$playData->getId()]['news_id'];}
 				<div class="playtype" id="play_list_{$playData->getId()}">{$playData->getName()} {if $newsId}(<a target="_blank" href="{url /news/view/?id=$newsId}">查看说明</a>){/if}</div>
 				<div class="h">
@@ -59,12 +60,69 @@
 					<div class="w2">{$playData->getPlayWealth($option->getValue())}</div>
 				</div>
 				{/loop}
-				<div class="d tc">
-					当前参与人数：<b>{$playData->getTotalPlayCount()}</b>人，共投注 <b>{$playData->getTotalPlayWealth()}</b> {$guess->getWealthTypeName()}
-				</div>
-				<div class="b">
-				&nbsp;
-				</div>
+					<div class="d tc">
+						当前参与人数：<b>{$playData->getTotalPlayCount()}</b>人，共投注 <b>{$playData->getTotalPlayWealth()}</b> {$guess->getWealthTypeName()}
+					</div>
+					<div class="b">
+						<a href="javascript:;"
+						   class="btn btn-primary"
+						   id="play_menu_{$playData->getId()}"
+						   onclick="GuessPlayHelper.togglePlayBox('{$playData->getId()}')">添加投注
+						</a>
+					</div>
+
+					{if $guess->isPlaying()}
+					<div id="play_box_{$playData->getId()}" class="play_box">
+						<div class="modal-body">
+							<div class="control-group">
+								<div class="controls">
+									{run $tempPlayDatas = $guess->getPlayDatas();$options = $tempPlayDatas[$playData->getId()]->getParameter()->getOptions()}
+									{run $selected_label = $options[$play->getPlayDatas()[$playData->getId()]->getChoose()]->getLabel();}
+									<select
+											id="play_value_{$playData->getId()}"
+											name="play[{$playData->getId()}][value]"
+											disabled>
+										<option value="{$selected_label}">{$selected_label}</option>
+									</select>
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label" for="tz">已经投注：</label>
+								<div class="controls">
+									<input type="text" value="{$play->getPlayDatas()[$playData->getId()]->getWealth()}" disabled>
+								</div>
+							</div>
+
+
+							<div class="control-group">
+								<label class="control-label" for="tz">添加投注：</label>
+								<div class="controls">
+									<input type="text" class="change-play-value" onkeyup="GuessPlayHelper.checkWealth('{$playData->getId()}')" name="play[{$playData->getId()}][wealth]" class="span3" min="{$playData->getBettingLowerLimit()}" max="{$playData->getBettingUpperLimit()}" {if $playData->getBettingLowerLimit()}value="{$playData->getBettingLowerLimit()}"{else}value="0.00000000"{/if}>
+								<span style="margin-left: 15px">
+
+								{if $playData->getBettingLowerLimit()}投注下限{$playData->getBettingLowerLimit()}{$guess->getWealthTypeName()}{/if}&nbsp;
+								{if $playData->getBettingUpperLimit()}投注上限{$playData->getBettingUpperLimit()}{$guess->getWealthTypeName()}{/if}&nbsp;
+								</span>
+								</div>
+							</div>
+
+							{if $oods[$option->getValue()]}
+							<div class="control-group">
+								<label class="control-label" for="tz">提示：</label>
+							<span>按当前赔率，获胜可得 <b odds="0" id="play_wealth_tip_{$playData->getId()}" style="font-size: 14px;line-height: 35px;">
+							0
+							</b> {$guess->getWealthTypeName()}
+							</span>
+							</div>
+							{/if}
+
+							<div class="control-group">
+								<a href="javascript:;" play-way-id="{$playData->getId()}" user-play-id="{$play->getId()}" class="btn mybtn" onclick="GuessPlayHelper.changePlay('{$playData->getId()}', this)">确认</a>
+							</div>
+
+						</div>
+					</div>
+					{/if}
 				{/loop}
 				
 				<div class="tzinfo">

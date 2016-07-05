@@ -7,6 +7,41 @@
 class PlayAction extends UserCenterAction
 {
 
+    public function fixed(HttpRequest $request) {
+        $playId = $request->getParameter('id');
+        $addPlayWealth = $request->getParameter('value');
+        $play_way_id = $request->getParameter('play_way_id');
+
+        if ( $addPlayWealth <= 0 ) {
+            AjaxResult::result(0, '添加投注额度需要大于0');
+        }
+
+        $guessService = GuessServiceFactory::getGuessService();
+        $playService = GuessServiceFactory::getPlayService();
+
+        $play = $playService->get($playId);
+        $guess = $guessService->get($play->getGuessId());
+        $play->setGuess($guess);
+        $play->setUser($this->user);
+
+        if ($play->getUserId() != $this->user->getId()) {
+            AjaxResult::result(0, '当前用户不存在');
+        }
+
+        $wealthType = $play->getWealthType();
+        if ($wealthType == 1 && $addPlayWealth > $this->user->getAvailableBtc()) {
+            AjaxResult::result(0, '你的莱特币不够，请先充值');
+        }
+        $play->setWealth( $play->getWealth() + $addPlayWealth);
+        $success = $playService->update($play, $addPlayWealth, $play_way_id);
+
+        if ($success) {
+            AjaxResult::result(1, '加注成功');
+        } else {
+            AjaxResult::result(0, '加注失败');
+        }
+    }
+
     public function index(HttpRequest $request)
     {
         $guessService = GuessServiceFactory::getGuessService();

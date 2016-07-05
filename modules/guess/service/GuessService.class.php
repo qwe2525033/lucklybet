@@ -381,8 +381,8 @@ class GuessService extends TransationSupport implements IGuessService
      */
     public function close(Guess $guess)
     {
-        if (! $guess || $guess->getPlayCount())
-            return false;
+        if ( !$guess ) return false;
+
         try {
             $this->beginTransation();
             // 改变状态
@@ -452,15 +452,106 @@ class GuessService extends TransationSupport implements IGuessService
         }
     }
 
+    public function back(Guess $guess) {
+        try {
+            $this->beginTransation();
+            $guessService = GuessServiceFactory::getGuessService();
+            $playWayService = GuessServiceFactory::getPlayWayService();
+            $userService = MemberServiceFactory::getUserService();
+            $playService = GuessServiceFactory::getPlayService();
+            $noticeService = MemberServiceFactory::getNoticeService();
+
+            // $guess = $guessService->get($id, true);
+            $guessDao = MD('Guess');
+            $userDao = MD('User');
+            $ioDao = MD('io');
+            $playWinWealth = 0;
+            $guessWinWealth = 0;
+
+            $plays = $playService->getPlays($guess);
+            $guessUser = $guess->getUser();
+            $guessWinWealth = 0;
+            $guessLink = NoticeService::makeGuessLink(array(
+                'id' => $guess->getId(),
+                'title' => $guess->getTitle()
+            ));
+            foreach ($plays as $play) {
+                // 对用户的竞猜参与进行判定
+                $playUser = $play->getUser();
+                $playWinWealth = 0;
+                $play->setWinWealth($playWinWealth);
+                // 保存竞猜结果
+                $playDao = MD('Play');
+                $update = array(
+                    'win_wealth' => $play->getWinWealth(),
+                    'status' => Play::STATUS_REDGED,
+                    'play_datas' => serialize($play->getPlayDatas())
+                );
+                
+                if (! $playDao->update($update, $play->getId())) {
+                    $this->rollBack();
+                    return false;
+                }
+                // 记录细明 io
+                $playKeepWealth = $play->getWealth();
+                $io = array(
+                    'from_user_id' => 0,
+                    'to_user_id' => $play->getUserId(),
+                    'create_time' => time()
+                );
+                $io['wealth_type'] = Io::WEALTH_TYPE_MONEY;
+                $io['to_title'] = "「解冻{$playKeepWealth}」竞猜{$guessLink}公布结果";
+
+                $io['wealth'] = $playKeepWealth;
+                $io['to_balance'] = $playUser->getAvailableBtc() + $io['wealth'];
+
+                // 更新金额
+                $update = array(
+                    'available_btc' => "available_btc + {$io['wealth']}",
+                    'freeze_btc' => "freeze_btc - {$playKeepWealth}"
+                );
+                
+                if (! $userDao->update($update, $playUser->getId(), true)) {
+                    $this->rollBack();
+                    return false;
+                }
+
+                // 添加记录细明
+                if (! $ioDao->add($io)) {
+                    $this->rollBack();
+                    return false;
+                }
+
+                // 给用户发送退回通知
+                $notice = "你参与的竞猜{$guessLink}投注被退回";
+                if (! $noticeService->notice($notice, $playUser->getId())) {
+                    $this->rollBack();
+                    return false;
+                }
+            
+
+                return true;
+            }
+        } catch (Exception $e) {
+            $this->rollBack();
+            return false;
+        }
+        
+    }
+
     /*
+     * 结果判定
      * @see IGuessService::guessPointRudge()
      */
     public function guessPointRudge(GuessPoint $guessPoint)
     {
-        if ($guessPoint->getStatus() != GuessPoint::STATUS_NORMAL || $guessPoint->getPlayDeadline() > time())
+        // if ($guessPoint->getStatus() != GuessPoint::STATUS_NORMAL || $guessPoint->getPlayDeadline() > time())
+        if ( $guessPoint->getStatus() != GuessPoint::STATUS_NORMAL )
             return false;
-            // 获取这个竞猜点的所有竞猜
+
+        // 获取这个竞猜点的所有竞猜
         $guesses = $this->getGuessPointGuesses($guessPoint);
+
         try {
             $this->beginTransation();
             $playWayService = GuessServiceFactory::getPlayWayService();
@@ -472,7 +563,8 @@ class GuessService extends TransationSupport implements IGuessService
             $ioDao = MD('io');
             $playWinWealth = 0;
             $guessWinWealth = 0;
-            
+
+            // 所有竞猜事件
             foreach ($guesses as $guess) {
                 $plays = $playService->getPlays($guess);
                 $guessUser = $guess->getUser();
@@ -482,21 +574,27 @@ class GuessService extends TransationSupport implements IGuessService
                     'title' => $guess->getTitle()
                 ));
                 foreach ($plays as $play) {
+                    if ( $play->getStatus() == 1 ) continue;
                     // 对用户的竞猜参与进行判定
                     $playUser = $play->getUser();
                     $playWinWealth = 0;
+
                     foreach ($play->getPlayDatas() as $playData) {
                         // 创建这个玩法的参数适配器
                         $playData->setPlay($play);
                         $playWay = $playWayService->get($playData->getPlayWayId());
                         $playWayAdapter = $playWay->getPlayWayAdapter();
-                        if (! $playWayAdapter->resultRudge($playData)) {
+
+                        // 获得竞猜的结果
+                        $result = $playWayAdapter->resultRudge($playData);
+                        if ( !$result ) {
                             $this->rollBack();
                             return false;
                         }
                         $playWinWealth += $playData->getWinWealth();
                         $playData->setPlay(null); // 删除Play避免保存
                     }
+
                     $play->setWinWealth($playWinWealth);
                     // 保存竞猜结果
                     $playDao = MD('Play');
@@ -505,6 +603,7 @@ class GuessService extends TransationSupport implements IGuessService
                         'status' => Play::STATUS_REDGED,
                         'play_datas' => serialize($play->getPlayDatas())
                     );
+
                     if (! $playDao->update($update, $play->getId())) {
                         $this->rollBack();
                         return false;
@@ -516,15 +615,19 @@ class GuessService extends TransationSupport implements IGuessService
                         'to_user_id' => $play->getUserId(),
                         'create_time' => time()
                     );
+
+                    // io记录声明
+                    if ( $playWinWealth === 0 ) { // 打平
+                        $io['to_title'] = "「打平解冻{$playKeepWealth}」竞猜{$guessLink}公布结果";
+                    } elseif ( $playWinWealth > 0 ) { // 赢
+                        $io['to_title'] = "「赢{$playWinWealth},解冻{$playKeepWealth}」竞猜{$guessLink}公布结果";
+                    } else { // 输
+                        $basWinWealth = abs($playWinWealth);
+                        $io['to_title'] = "「输{$basWinWealth},解冻{$playKeepWealth}」竞猜{$guessLink}公布结果";
+                    }
+
                     if ($guess->wealthTypeIsBtc()) {
                         $io['wealth_type'] = Io::WEALTH_TYPE_MONEY;
-                        if ($playWinWealth >= 0) {
-                            // 赢
-                            $io['to_title'] = "「赢{$playWinWealth},解冻{$playKeepWealth}」竞猜{$guessLink}公布结果";
-                        } else {
-                            $basWinWealth = abs($playWinWealth);
-                            $io['to_title'] = "「输{$basWinWealth},解冻{$playKeepWealth}」竞猜{$guessLink}公布结果";
-                        }
                         $io['wealth'] = $playWinWealth + $playKeepWealth;
                         $io['to_balance'] = $playUser->getAvailableBtc() + $io['wealth'];
                         
@@ -545,13 +648,6 @@ class GuessService extends TransationSupport implements IGuessService
                         }
                     } elseif ($guess->wealthTypeIsIntegral()) {
                         $io['wealth_type'] = Io::WEALTH_TYPE_INTEGRAL;
-                        if ($playWinWealth >= 0) {
-                            // 赢
-                            $io['to_title'] = "「赢{$playWinWealth},解冻{$playKeepWealth}」竞猜{$guessLink}公布结果";
-                        } else {
-                            $basWinWealth = abs($playWinWealth);
-                            $io['to_title'] = "「输{$basWinWealth},解冻{$playKeepWealth}」竞猜{$guessLink}公布结果";
-                        }
                         $io['wealth'] = $playWinWealth + $playKeepWealth;
                         $io['to_balance'] = $playUser->getAvailableIntegral() + $io['wealth'];
                         
@@ -684,6 +780,10 @@ class GuessService extends TransationSupport implements IGuessService
             $this->rollBack();
             return false;
         }
+    }
+
+    public function getGuess(GuessPoint $guessPoint) {
+        return $this->getGuessPointGuesses($guessPoint);
     }
 
     private function getGuessPointGuesses(GuessPoint $guessPoint)

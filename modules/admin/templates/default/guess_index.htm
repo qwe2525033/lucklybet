@@ -72,6 +72,7 @@
 					</tr>
 					</thead>
 					<tbody>
+						{run $time = time();}
 						{loop $items $item}
 						<tr>
 								<td align="left"><a href="/guess/adminReview/?id={$item['id']}" target="_blank">{$item['title']}</a></td>
@@ -79,19 +80,37 @@
 								<td align="left">{if $item['wealth_type'] == 1}莱特币/{$item['keep_wealth']}{elseif $item['wealth_type'] == 2}积分/{$item['keep_wealth']}{else}{$item['custom_type']}{/if}</td>
 								<td align="left">{$item['play_count']}/{$item['play_wealth']}</td>
 								<td align="left">
-									{if $item['status'] == 0}待审核
-									{elseif $item['status'] == 1}审核通过
-									{elseif $item['status'] == 2}提交判定
-									{elseif $item['status'] == 3}已结束
-									{elseif $item['status'] == 4}已关闭
-									{else}不详{/if}
+									{if $item['status'] == Guess::STATUS_WAITING_RUDGE}
+										<span class="bg-red">判定中</span>
+									{elseif $item['status'] == Guess::STATUS_END}
+										<span class="bg-red">已结束</span>
+									{elseif $item['status'] == Guess::STATUS_CLOSE}
+										<span class="bg-red">已关闭</span>
+									{elseif $item['status'] == Guess::STATUS_WAITING_CKECK}
+										<span class="bg-red">审核中</span>
+									{elseif $item['play_deadline'] < $time}
+										<span class="bg-red">已截止</span>
+									{else}
+										<span class="bg-green">投注中</span>
+									{/if}
 								</td>
 								<td align="left">{date $item['create_time'] Y-m-d}</td>
 								<td align="left">
+									{if $item['play_deadline'] > $time && ($item['status'] == 1 || $item['status'] == 2 )}
+										<a href="javascript:
+										 if (confirm('是否确认退回并关闭竞猜事件'))
+											window.location.href='{url /$currentModule/$currentAction/end/?id=$item[id]}'"
+										>提前结束</a>&nbsp;
+										<a href="javascript:
+										 if (confirm('是否确认退回并关闭竞猜事件'))
+											window.location.href='{url /$currentModule/$currentAction/back/?id=$item[id]}'"
+										>退回并关闭</a>&nbsp;
+									{/if}
 									{if $item['status'] == 0}
 									<a href="{url /$currentModule/$currentAction/check/?id=$item[id]}">审核通过</a>&nbsp;
 									<a href="{url /$currentModule/$currentAction/close/?id=$item[id]}">关闭</a>&nbsp;
 									{elseif $item['status'] == 2}
+
 									<a href="{url /$currentModule/$currentAction/rudge/?id=$item[id]}">结果判定</a>&nbsp;
 									{/if}
 									<a href="{url /$currentModule/$currentAction/del/?id=$item[id]}">删除</a>&nbsp;

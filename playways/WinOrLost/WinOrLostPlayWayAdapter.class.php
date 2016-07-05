@@ -42,7 +42,9 @@ class WinOrLostPlayWayAdapter extends IPlayWayAdapter{
 	}
 	
 	/*
+	 * 浮动赔率 （没有庄家的对赌）
 	 * @see IPlayWayAdapter::resultRudge()
+	 * @return Inter  0->
 	 */
 	public function resultRudge(PlayData $playData){
 		$play = $playData->getPlay();
@@ -53,25 +55,35 @@ class WinOrLostPlayWayAdapter extends IPlayWayAdapter{
 		$guessPointParameters = $guessPoint->getParams();
 		$firstParameter = current($guessPointParameters);
 		$secondParameter = next($guessPointParameters);
+		$thirdParameter = next($guessPointParameters);
+
 		if($firstParameter->isEmptyValue() || $secondParameter->isEmptyValue()){
 			return false;
 		}
 		$chooseValue = $playData->getChoose();
+
 		if($chooseValue == ''){
 			return false;
 		}
 		$chooseOods = $playWayData->getOptionOdds($chooseValue);
-		if($chooseOods == 0){
+
+		// 计算 事件结果
+		if($firstParameter->getValue() > $secondParameter->getValue()){
+			$correctChoose = $firstParameter->getName();
+		}elseif($firstParameter->getValue() == $secondParameter->getValue()){
+			$correctChoose = IPlayWayAdapter::PARAMETER_NAME_EQUAL;
+		}else{
+			$correctChoose = $secondParameter->getName();
+		}
+
+		// 获胜选项的赔率
+		// 如果为0 则对赌不成立
+		$winOods = $playWayData->getOptionOdds($correctChoose);
+
+		if($chooseOods == 0  || $winOods === 0){
 			//没有赔率,当打平
 			$winWealth = 0;
 		}else{
-			if($firstParameter->getValue() > $secondParameter->getValue()){
-				$correctChoose = $firstParameter->getName();
-			}elseif($firstParameter->getValue() == $secondParameter->getValue()){
-				$correctChoose = IPlayWayAdapter::PARAMETER_NAME_EQUAL;
-			}else{
-				$correctChoose = $secondParameter->getName();
-			}
 			$isCorrect = ($correctChoose == $chooseValue);
 			if($isCorrect){
 				$winWealth = $chooseOods * $playData->getWealth();
@@ -80,6 +92,7 @@ class WinOrLostPlayWayAdapter extends IPlayWayAdapter{
 				$winWealth = 0 - $playData->getWealth();
 			}
 		}
+
 		$playData->setWinWealth($winWealth);
 		return true;
 	}

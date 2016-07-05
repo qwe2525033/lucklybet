@@ -113,6 +113,10 @@ class AjaxResult {
 	public function setMessage($message) {
 		$this->message = $message;
 	}
+
+	public static function result($state, $message) {
+		die(json_encode(array('state'=>$state, 'message'=>$message)));
+	}
 	
 	/**
 	 * 返回Json格式结果

@@ -187,6 +187,49 @@ class GuessAction extends AbstractAdminAction{
 			show_message(get_lang('operation_failed_common'));
 		}
 	}
+
+	// 提前结束
+	public function end(HttpRequest $request){
+		$id = $request->getParameter('id');
+		if(empty($id)){
+			show_message(get_lang('no_record_common'));
+		}
+		// guess
+		$success = $this->dao->update(array(
+			'play_deadline'=> time() - 10
+		), $id);
+
+		if($success){
+			$request->redirect($request->getAttribute('index_url'));
+		}else{
+			//操作失败
+			show_message(get_lang('operation_failed_common'));
+		}
+	}
+
+	// 退回 并且关闭
+	public function back(HttpRequest $request){
+		$id = $request->getParameter('id');
+		if(empty($id)){
+			show_message(get_lang('no_record_common'));
+		}
+
+		$guessService = GuessServiceFactory::getGuessService();
+		$guess = $guessService->get($id, true);
+		$success = $guessService->close($guess);
+
+		if($success){
+			$success = $guessService->back($guess);
+			if($success){
+				$request->redirect($request->getAttribute('index_url'));
+			}else{
+				show_message(get_lang('operation_failed_common'));
+			}
+		}else{
+			show_message(get_lang('operation_failed_common'));
+		}
+
+	}
 	
 	public function rudge(HttpRequest $request){
 		$id = $request->getParameter('id');
